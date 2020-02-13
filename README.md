@@ -1,20 +1,25 @@
 ![icon](images/PicsArt_02-10-10.06.53.jpg)
 
-## Plugin Support
-- api 3.0.1 mcpe 1.1 [Click here] (https://github.com/GenisysPro/GenisysPro)
+**Plugin Support**<br>
+- GenisysPro api 3.0.1 mcpe 1.1 https://github.com/GenisysPro/GenisysPro
 
-##ปลั๊กอินทำไรได้บ้าง
+
+**ปลั๊กอินทำอะไรได้บ้าง**<br>
 - เป็นปลั๊กอินส่งข้อความหาผู้เล่น "สามารถส่งข้อความแบบออฟไลน์ได้"
 - สามารถดูข้อความที่เราส่งไปว่า อ่านรึยัง?
 
 
-##วิธีใช้งาน
-คลิปตัวอย่าง https://youtu.be/1GYqwORPJQg
+**วิธีใช้งาน**<br>
+- คลิปตัวอย่าง [คลิก](https://youtu.be/1GYqwORPJQg)
 
-##Download
-[Click here] https://github.com/HmmHmmmm/MailPlugin/releases
 
-##Command คำสั่งต่างๆ
+## ดาวโหลด
+| version  | Download  |
+| ---- | ------------------------------------ |
+| 1.0  | [Click here](https://github.com/HmmHmmmm/MailPlugin/releases/1.0)  |
+
+
+**Command**<br>
 - /mail write <ชื่อผู้เล่น> : แล้วพิมที่แชทเขียนข้อความเพื่อส่งข้อความให้ผู้เล่นคนนั้น
 - /mail read <ชื่อผู้ที่ส่งข้อความ> : อ่านข้อความผู้ที่ส่งมา
 - /mail read-all : อ่านข้อความผู้ที่ส่งมาทั้งหมด
