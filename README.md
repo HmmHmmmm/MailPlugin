@@ -1,8 +1,5 @@
 ![icon](images/PicsArt_02-10-10.06.53.jpg)
 
-**Plugin Support**<br>
-- GenisysPro api 3.0.1 mcpe 1.1 https://github.com/GenisysPro/GenisysPro
-
 
 **ปลั๊กอินทำอะไรได้บ้าง**<br>
 - เป็นปลั๊กอินส่งข้อความหาผู้เล่น "สามารถส่งข้อความแบบออฟไลน์ได้"
@@ -14,9 +11,9 @@
 
 
 ## ดาวโหลด
-| version  | Download  |
-| ---- | ------------------------------------ |
-| 1.0  | [Click here](https://github.com/HmmHmmmm/MailPlugin/releases/1.0)  |
+| version  | plugin support                        | Download                                                   |
+| ---- | ------------------------------------ | ---------------------------------------------------------- |
+| 1.0  | GenisysPro api 3.0.1 mcpe 1.1 [Click here](https://github.com/GenisysPro/GenisysPro) | [คลิก](https://github.com/HmmHmmmm/MailPlugin/releases/1.0) |
 
 
 **Command**<br>
