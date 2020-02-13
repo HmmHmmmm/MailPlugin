@@ -1,4 +1,4 @@
-![icon](images/PicsArt_02-10-10.06.53.jpg)
+![icon](images/1.0/PicsArt_02-10-10.06.53.jpg)
 
 
 **ปลั๊กอินทำอะไรได้บ้าง**<br>
@@ -11,7 +11,7 @@
 
 
 ## ดาวโหลด
-| version  | plugin support                        | Download                                                   |
+| version  | plugin support                        | Download  zip/phar                                                 |
 | ---- | ------------------------------------ | ---------------------------------------------------------- |
 | 1.0  | GenisysPro api 3.0.1 mcpe 1.1 [Click here](https://github.com/GenisysPro/GenisysPro) | [คลิก](https://github.com/HmmHmmmm/MailPlugin/releases/1.0) |
 
