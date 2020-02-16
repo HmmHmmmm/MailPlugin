@@ -18,7 +18,7 @@ class Mail extends PluginBase implements Listener{
    
    public $pluginInfo = [
       "name" => "MailPlugin",
-      "version" => 2.0,
+      "version" => 2.1,
       "author" => "HmmHmmmm",
       "description" => "ปลั๊กอินนี้ทำแจก โปรดอย่าเอาไปขาย *หากจะเอาไปแจกต่อโปรดให้เครดิตด้วย*",
       "facebook" => "https://m.facebook.com/phonlakrit.knaongam.1",

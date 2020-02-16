@@ -20,9 +20,19 @@ class Form{
       $form = $this->getPlugin()->getFormAPI()->createSimpleForm(function ($player, $data){
          if(!($data === null)){
             if($data == 0){
+               if(!$player->hasPermission("mail.command.write")){
+                  $text = "§cเกิดข้อผิดพลาด\n§eคุณไม่สามารถใช้งานได้";                 
+                  $this->MailMenu($player, $text);
+                  return;
+               }
                $this->MailWrite($player);
             }
             if($data == 1){
+               if(!$player->hasPermission("mail.command.see")){
+                  $text = "§cเกิดข้อผิดพลาด\n§eคุณไม่สามารถใช้งานได้";                 
+                  $this->MailMenu($player, $text);
+                  return;
+               }
                if($this->getPlugin()->getCountMailPlayers($player->getName()) == 0){
                   $text = "§cเกิดข้อผิดพลาด\n§eคุณยังไม่ได้ส่งข้อความหาใคร";                 
                   $this->MailMenu($player, $text);
@@ -31,6 +41,11 @@ class Form{
                $this->MailSeeAll($player);
             }
             if($data == 2){
+               if(!$player->hasPermission("mail.command.read") && !$player->hasPermission("mail.command.readall")){
+                  $text = "§cเกิดข้อผิดพลาด\n§eคุณไม่สามารถใช้งานได้";                 
+                  $this->MailMenu($player, $text);
+                  return;
+               }
                if($this->getPlugin()->getMailSenderCount($player->getName()) == 0){
                   $text = "§cเกิดข้อผิดพลาด\n§eไม่มีใครส่งข้อความหาคุณ";
                   $this->MailMenu($player, $text);
@@ -39,24 +54,21 @@ class Form{
                $this->MailReadAll($player);
             }
             if($data == 3){
+               if(!$player->hasPermission("mail.command.clearall")){
+                  $text = "§cเกิดข้อผิดพลาด\n§eคุณไม่สามารถใช้งานได้";                 
+                  $this->MailMenu($player, $text);
+                  return;
+               }
                $this->MailClearAll($player);
             }
          }
       });
       $form->setTitle($this->getPrefix()." Menu");
       $form->setContent($content);
-      if($player->hasPermission("mail.command.write")){
-         $form->addButton("§fส่งข้อความหาผู้เล่น");
-      }
-      if($player->hasPermission("mail.command.see")){
-         $form->addButton("§fดูข้อความที่เคยส่งไป");
-      }
-      if($player->hasPermission("mail.command.read") && $player->hasPermission("mail.command.readall")){
-         $form->addButton("§fคุณมี (§a".$this->getPlugin()->getCountMail($player->getName())."§f) ข้อความจากทั้งหมด");
-      }
-      if($player->hasPermission("mail.command.clearall")){
-         $form->addButton("§cลบข้อความของผู้ที่ส่งมาทั้งหมด");
-      }
+      $form->addButton("§fส่งข้อความหาผู้เล่น");
+      $form->addButton("§fดูข้อความที่เคยส่งไป");
+      $form->addButton("§fคุณมี (§a".$this->getPlugin()->getCountMail($player->getName())."§f) ข้อความจากทั้งหมด");
+      $form->addButton("§cลบข้อความของผู้ที่ส่งมาทั้งหมด");
       $form->sendToPlayer($player);
    }
    public function MailWrite(Player $player, string $content = ""): void{
