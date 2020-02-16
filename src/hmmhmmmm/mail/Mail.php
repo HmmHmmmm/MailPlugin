@@ -6,14 +6,25 @@ use pocketmine\Player;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerLoginEvent;
-use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
 class Mail extends PluginBase implements Listener{
    private static $instance = null;
    private $prefix = null;
+   private $form = null;
+   private $formapi = null;
    public $array = [];
+   
+   public $pluginInfo = [
+      "name" => "MailPlugin",
+      "version" => 2.0,
+      "author" => "HmmHmmmm",
+      "description" => "ปลั๊กอินนี้ทำแจก โปรดอย่าเอาไปขาย *หากจะเอาไปแจกต่อโปรดให้เครดิตด้วย*",
+      "facebook" => "https://m.facebook.com/phonlakrit.knaongam.1",
+      "youtube" => "https://m.youtube.com/channel/UCtjvLXDxDAUt-8CXV1eWevA",
+      "github" => "https://github.com/HmmHmmmm/MailPlugin"
+   ];
    
    public static function getInstance(){
       return self::$instance;
@@ -22,20 +33,39 @@ class Mail extends PluginBase implements Listener{
       self::$instance = $this;
    } 
    public function onEnable(){
+      foreach($this->pluginInfo as $key => $value){
+         $this->getServer()->getLogger()->notice($key." ".$value);
+      }
       @mkdir($this->getDataFolder());
       @mkdir($this->getDataFolder()."account/");
-      $this->prefix = "§dMail";
+      $this->saveDefaultConfig();
+      $this->prefix = "Mail";
+      $this->form = new Form($this);
       $this->getServer()->getPluginManager()->registerEvents($this, $this);
-      $this->getServer()->getScheduler()->scheduleRepeatingTask(new MailTask($this), 20);
+      $this->getScheduler()->scheduleRepeatingTask(new MailTask($this), 20);
       $cmd = [
-         new MailCommand($this)
+         new MailCommand($this),
+         new ReportCommand($this)
       ];
       foreach($cmd as $command){
          $this->getServer()->getCommandMap()->register($command->getName(), $command);
       }
+      if($this->getServer()->getPluginManager()->getPlugin("FormAPI") === null){
+         $this->getLogger()->critical("§cปลั๊กนี้จะไม่ทำงาน กรุณาลงปลั๊กอิน FormAPI");
+         $this->getServer()->getPluginManager()->disablePlugin($this);
+      }else{
+         $this->formapi = $this->getServer()->getPluginManager()->getPlugin("FormAPI");
+      }
+      
    }
    public function getPrefix(): string{
       return "§e[§d".$this->prefix."§e]§f";
+   }
+   public function getForm(): Form{
+      return $this->form;
+   }
+   public function getFormAPI(){
+      return $this->formapi;
    }
    public function getPlayerData(string $name): PlayerData{
       return new PlayerData($this, $name);
@@ -45,6 +75,8 @@ class Mail extends PluginBase implements Listener{
       $playerData = $this->getPlayerData($player->getName());
       if(!$playerData->isData()){
          $playerData->register();
+      }else{
+         $playerData->update();
       }
    }
    public function onPlayerChat(PlayerChatEvent $event){
@@ -55,10 +87,6 @@ class Mail extends PluginBase implements Listener{
          $this->addMail($this->array[$player->getName()], $player, $message);
          unset($this->array[$player->getName()]);
       }
-   }
-   public function onPlayerRespawn(PlayerRespawnEvent $event){
-      $player = $event->getPlayer();
-      $player->sendMessage($this->countMail($player->getName()));
    }
    public function isMail(string $name): bool{
       $playerData = $this->getPlayerData($name);
@@ -144,7 +172,29 @@ class Mail extends PluginBase implements Listener{
       $data->setNested("mail.message.".$senderName.".write.".$msgCount.".msg", $message);
       $data->save();
    }
-   public function addMail(string $name, Player $sender, string $message): void{
+   public function getCountMailPlayers(string $name): int{
+      $playerData = $this->getPlayerData($name);
+      $data = $playerData->getConfig()->getAll();
+      return count($data["mail"]["players"]);
+   }
+   public function getMailPlayers(string $name): array{
+      $playerData = $this->getPlayerData($name);
+      $data = $playerData->getConfig()->getAll();
+      return $data["mail"]["players"];
+   }
+   public function setMailPlayers(string $name, string $senderName): void{
+      $playerName = strtolower($name);
+      $path = $this->getDataFolder()."account/$playerName.yml";
+      $config = new Config($path, Config::YAML, array());
+      $data = $config->getAll();
+      $senderName = strtolower($senderName);
+      if(!(in_array($senderName, $data["mail"]["players"]))){
+         $data["mail"]["players"][] = $senderName;
+      }
+      $config->setAll($data);       
+      $config->save();       
+   }
+   public function addMail(string $name, Player $sender, string $message, bool $tip = true): void{
       $playerData = $this->getPlayerData($name);
       $data = $playerData->getConfig()->getAll();       
       $senderName = strtolower($sender->getName());
@@ -179,11 +229,14 @@ class Mail extends PluginBase implements Listener{
       $this->setMailMsg($name, $senderName, $msgCount, $message1);
       $count = $this->getCountMail($name) + 1;
       $this->setCountMail($name, $count);
+      $this->setMailPlayers($senderName, $name);
       $player = $this->getServer()->getPlayer($name); 
       $sender->sendMessage($this->getPrefix()." §aได้ส่งข้อความให้กับ ".$name." แล้ว คุณได้เขียนข้อความว่า ".$message);
       if($player instanceof Player){
-         $player->sendMessage($this->getPrefix()." คุณมี §a1§fข้อความใหม่! จากผู้เล่นชื่อ §e".$senderName." §fพิม /mail read ".$senderName." อ่านดูสิ!"); 
-         $player->addTitle(("§fคุณมี §a1§fข้อความใหม่!"), ("§fจากผู้เล่นชื่อ §e".$senderName." §fพิม /mail อ่านดูสิ!"));
+         if($tip){
+            $player->sendMessage($this->getPrefix()." คุณมี §a1§fข้อความใหม่! จากผู้เล่นชื่อ §e".$senderName." §fพิม /mail read ".$senderName." อ่านดูสิ!"); 
+            $player->addTitle(("§fคุณมี §a1§fข้อความใหม่!"), ("§fจากผู้เล่นชื่อ §e".$senderName." §fพิม /mail อ่านดูสิ!"));
+         }
       }
    }     
    public function readMail(string $name, string $senderName, int $msgCount): string{

@@ -1,16 +1,29 @@
 name: MailPlugin
-version: 1.0
-api: 3.0.1
+version: 2.0
+api: 3.11.0
 author: HmmHmmmmm
 main: hmmhmmmm\mail\Mail
-description:
-- Facebook https://m.facebook.com/phonlakrit.knaongam.1
-- Youtube https://m.youtube.com/channel/UCtjvLXDxDAUt-8CXV1eWevA
-- Github https://github.com/HmmHmmmm
 
 permissions:
     mail.command:
         default: false
         children:
-            mail.command.mail:
+            mail.command.info:
+                default: op
+            mail.command.write:
+                default: true
+            mail.command.read:
+                default: true
+            mail.command.readall:
+                default: true
+            mail.command.clear:
+                default: true
+            mail.command.clearall:
+                default: true
+            mail.command.see:
+                default: true
+    report.command:
+        default: false
+        children:
+            report.command.report:
                 default: true
