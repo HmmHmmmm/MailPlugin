@@ -78,8 +78,8 @@ class Form{
          }
          $name = explode(" ", $data[0]); 
          if($name[0] == null){
-            $text = "§cเกิดข้อผิดพลาด\n§eกรุณาเขียนชื่อใหม่";                  
-            $this->MailWrite($player, $text);                  
+            $text = "§cเกิดข้อผิดพลาด\n§e<ชื่อผู้เล่น> จำเป็นต้องใส่"; 
+            $this->MailWrite($player, $text);
             return;
          }
          $playerData = $this->getPlugin()->getPlayerData($name[0]);
@@ -88,7 +88,14 @@ class Form{
             $this->MailWrite($player, $text);                  
             return;
          }
-         $this->getPlugin()->addMail($playerData->getName(), $player, $data[1], false);
+         $message = explode(" ", $data[1]); 
+         if($message[0] == null){
+            $text = "§cเกิดข้อผิดพลาด\n§e<ข้อความที่จะส่ง> จำเป็นต้องใส่"; 
+            $this->MailWrite($player, $text);
+            return;
+         }
+         $message = $data[1];
+         $this->getPlugin()->addMail($playerData->getName(), $player, $message, false);
          $pOnline = $this->getPlugin()->getServer()->getPlayer($name[0]);
          if($pOnline instanceof Player){
             $this->MailAdd($pOnline, $player->getName());
@@ -105,12 +112,14 @@ class Form{
       $pOnline = $this->getPlugin()->getServer()->getPlayer($senderName);
       $form = $this->getPlugin()->getFormAPI()->createCustomForm(function ($player, $data) use ($senderName, $content, $pOnline){
          if(!($data === null)){
-            if($data[1] == null){
-               $text = "§cเกิดข้อผิดพลาด\n§eกรุณาเขียนใหม่\n".$content;
+            $message = explode(" ", $data[1]); 
+            if($message[0] == null){
+               $text = "§cเกิดข้อผิดพลาด\n§e<ส่งข้อความ> จำเป็นต้องใส่\n".$content;
                $this->MailSeeMsg($player, $senderName, $text);
                return;
             }
-            $this->getPlugin()->addMail($senderName, $player, $data[1], false);
+            $message = $data[1];
+            $this->getPlugin()->addMail($senderName, $player, $message, false);
             if($pOnline instanceof Player){
                $this->MailAdd($pOnline, $player->getName());
             }
@@ -159,25 +168,23 @@ class Form{
       $form = $this->getPlugin()->getFormAPI()->createCustomForm(function ($player, $data) use ($senderName, $content, $pOnline){
          if(!($data === null)){
             if($data[1] == 0){
-               if($data[2] == null){
-                  $text = "§cเกิดข้อผิดพลาด\n§eกรุณาเขียนใหม่\n".$content;
-                  $this->MailReadMsg($player, $senderName, $text);                  
+               $message = explode(" ", $data[2]); 
+               if($message[0] == null){
+                  $text = "§cเกิดข้อผิดพลาด\n§e<ตอบกลับ> จำเป็นต้องใส่\n".$content;
+                  $this->MailReadMsg($player, $senderName, $text);
                   return;
                }
-               $this->getPlugin()->addMail($senderName, $player, $data[2], false);
+               $message = $data[2];
+               $this->getPlugin()->addMail($senderName, $player, $message, false);
                if($pOnline instanceof Player){
                   $this->MailAdd($pOnline, $player->getName());
                }
             }
             if($data[1] == 1){
-               if($data[2] == null){
-                  $text = "§cเกิดข้อผิดพลาด\n§eกรุณาเขียนใหม่\n".$content;
-                  $this->MailReadMsg($player, $senderName, $text);                  
-                  return;
-               }
-               if(!is_numeric($data[2])){
-                  $text = "§cเกิดข้อผิดพลาด\n§eกรุณาเขียนให้เป็นตัวเลข\n".$content;
-                  $this->MailReadMsg($player, $senderName, $text);                  
+               $msgCount = explode(" ", $data[2]); 
+               if($msgCount[0] == null && !is_numeric($msgCount[0])){
+                  $text = "§cเกิดข้อผิดพลาด\n§e<ลบข้อความ> จำเป็นต้องใส่และเขียนให้เป็นตัวเลข\n".$content;
+                  $this->MailReadMsg($player, $senderName, $text);
                   return;
                }
                $msgCount = (int) $data[2];
@@ -297,12 +304,14 @@ class Form{
       $form = $this->getPlugin()->getFormAPI()->createCustomForm(function ($player, $data) use ($senderName, $content, $pOnline){
          if(!($data === null)){
             if($data[1] == 0){
-               if($data[2] == null){
-                  $text = "§cเกิดข้อผิดพลาด\n§eกรุณาเขียนใหม่\n".$content;
+               $message = explode(" ", $data[2]); 
+               if($message[0] == null){
+                  $text = "§cเกิดข้อผิดพลาด\n§e<ส่งข้อความ> จำเป็นต้องใส่\n".$content;
                   $this->Report($player, $text);
                   return;
                }
-               $this->getPlugin()->addMail($senderName, $player, $data[2], false);
+               $message = $data[2];
+               $this->getPlugin()->addMail($senderName, $player, $message, false);
                if($pOnline instanceof Player){
                   $this->MailAdd($pOnline, $player->getName());
                }

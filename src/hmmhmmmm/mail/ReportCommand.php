@@ -29,7 +29,10 @@ class ReportCommand extends Command implements PluginIdentifiableCommand{
       if(!$this->testPermission($sender)){
          return true;
       }
-      
+      if(!$sender instanceof Player){
+         $this->sendConsoleError($sender);
+         return true;
+      }
       if(empty($args)){
          $this->getPlugin()->getForm()->Report($sender);
          return true;
