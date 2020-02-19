@@ -52,4 +52,4 @@ report:
 
 
 ## LICENSE
-ดูใบอนุญาต GPL-3.0 [LICENSE](/LICENSE)
+ใบอนุญาต GPL-3.0 [license](https://github.com/HmmHmmmm/MailPlugin/blob/master/LICENSE)
