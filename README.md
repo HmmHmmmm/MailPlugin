@@ -52,4 +52,4 @@ report:
 
 
 ## LICENSE
-ดูใบอนุญาต [LICENSE](/LICENSE)
+ดูใบอนุญาต GPL-3.0 [LICENSE](/LICENSE)
