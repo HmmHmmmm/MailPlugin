@@ -82,9 +82,8 @@ class MailCommand extends Command implements PluginIdentifiableCommand{
                   $this->sendPermissionError($sender);
                   return true;
                }
-               foreach($this->getPlugin()->pluginInfo as $key => $value){
-                  $sender->sendMessage($key." ".$value);
-               }
+               $sender->sendMessage($this->getPlugin()->getPluginInfo());
+               
                break;
             case "write":
                if(!$sender->hasPermission("mail.command.write")){

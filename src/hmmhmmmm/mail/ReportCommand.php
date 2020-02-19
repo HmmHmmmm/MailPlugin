@@ -37,7 +37,6 @@ class ReportCommand extends Command implements PluginIdentifiableCommand{
          $this->getPlugin()->getForm()->Report($sender);
          return true;
       }
-      
       return true;
    }
 }

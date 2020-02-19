@@ -7,25 +7,18 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\plugin\PluginBase;
+use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 
 class Mail extends PluginBase implements Listener{
    private static $instance = null;
-   private $prefix = null;
+   private $prefix = "?";
+   private $facebook = "§cไม่มี";
+   private $youtube = "§cไม่มี";
    private $form = null;
    private $formapi = null;
    public $array = [];
-   
-   public $pluginInfo = [
-      "name" => "MailPlugin",
-      "version" => 2.2,
-      "author" => "HmmHmmmm",
-      "description" => "ปลั๊กอินนี้ทำแจก โปรดอย่าเอาไปขาย *หากจะเอาไปแจกต่อโปรดให้เครดิตด้วย*",
-      "facebook" => "https://m.facebook.com/phonlakrit.knaongam.1",
-      "youtube" => "https://m.youtube.com/channel/UCtjvLXDxDAUt-8CXV1eWevA",
-      "github" => "https://github.com/HmmHmmmm/MailPlugin"
-   ];
-   
+
    public static function getInstance(){
       return self::$instance;
    }
@@ -33,13 +26,12 @@ class Mail extends PluginBase implements Listener{
       self::$instance = $this;
    } 
    public function onEnable(){
-      foreach($this->pluginInfo as $key => $value){
-         $this->getServer()->getLogger()->notice($key." ".$value);
-      }
       @mkdir($this->getDataFolder());
       @mkdir($this->getDataFolder()."account/");
       $this->saveDefaultConfig();
       $this->prefix = "Mail";
+      $this->facebook = "https://m.facebook.com/phonlakrit.knaongam.1";
+      $this->facebook = "https://m.youtube.com/channel/UCtjvLXDxDAUt-8CXV1eWevA";
       $this->form = new Form($this);
       $this->getServer()->getPluginManager()->registerEvents($this, $this);
       $this->getScheduler()->scheduleRepeatingTask(new MailTask($this), 20);
@@ -56,15 +48,25 @@ class Mail extends PluginBase implements Listener{
       }else{
          $this->formapi = $this->getServer()->getPluginManager()->getPlugin("FormAPI");
       }
-      
+      $this->getServer()->getLogger()->info($this->getPluginInfo());
    }
    public function getPrefix(): string{
       return "§e[§d".$this->prefix."§e]§f";
    }
+   public function getFacebook(): string{
+      return $this->facebook;
+   }
+   public function getYoutube(): string{
+      return $this->youtube;
+   }
+   public function getPluginInfo(): string{
+      $author $plugin->getDescription()->getAuthors();
+      $text = "\n".$this->getPrefix()." ชื่อปลั๊กอิน ".$this->getDescription()->getName()."\n".$this->getPrefix()." เวอร์ชั่น ".$this->getDescription()->getVersion()."\n".$this->getPrefix()." รายชื่อผู้สร้าง ".implode(", ", $author)."\n".$this->getPrefix()." คำอธิบายของปลั๊กอิน: ปลั๊กอินนี้ทำแจก โปรดอย่าเอาไปขาย *หากจะเอาไปแจกต่อโปรดให้เครดิตด้วย*\n".$this->getPrefix()." เฟสบุ๊ค ".$this->getFacebook()."\n".$this->getPrefix()." ยูทูป ".$this->getYoutube()."\n".$this->getPrefix()." เว็บไซต์ ".$this->getDescription()->getWebsite();
+      return $text;   }
    public function getForm(): Form{
       return $this->form;
    }
-   public function getFormAPI(){
+   public function getFormAPI(): Plugin{
       return $this->formapi;
    }
    public function getPlayerData(string $name): PlayerData{
@@ -98,7 +100,7 @@ class Mail extends PluginBase implements Listener{
       $data = $playerData->getConfig()->getAll();
       return count($data["mail"]["message"]);
    }
-   public function getMailSender(string $name){
+   public function getMailSender(string $name): array{
       $playerData = $this->getPlayerData($name);
       $data = $playerData->getConfig()->getAll();
       return array_keys($data["mail"]["message"]);
@@ -140,7 +142,7 @@ class Mail extends PluginBase implements Listener{
       $data = $playerData->getConfig()->getAll();
       return count($data["mail"]["message"][$senderName]["write"]);
    }
-   public function getMailSenderWrite(string $name, string $senderName){
+   public function getMailSenderWrite(string $name, string $senderName): array{
       $playerData = $this->getPlayerData($name);
       $data = $playerData->getConfig()->getAll();
       return array_keys($data["mail"]["message"][$senderName]["write"]);     

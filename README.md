@@ -28,7 +28,7 @@
 
 
 **API**<br>
-- Mail::getInstance()::getCountMail(string $playerName) #ดูเลขข้อความที่มีอยู่ทั้งหมด
+- ดูเลขข้อความที่มีอยู่ทั้งหมด Mail::getInstance()->getCountMail(string $playerName)
 
 
 **Config**<br>
@@ -41,27 +41,11 @@ report:
 
 **Command**<br>
 - /mail : เปิด gui form
-
 - /mail info : เครดิตผู้สร้าง
-- default: op
-
 - /mail write <ชื่อผู้เล่น> : แล้วพิมที่แชทเขียนข้อความเพื่อส่งข้อความให้ผู้เล่นคนนั้น
-- default: true
-
 - /mail read <ชื่อผู้ที่ส่งข้อความ> : อ่านข้อความผู้ที่ส่งมา
-- default: true
-
 - /mail read-all : อ่านข้อความผู้ที่ส่งมาทั้งหมด
-- default: true
-
 - /mail clear <ชื่อผู้ที่ส่งข้อความ> <หมายเลขข้อความ> : เพื่อลบข้อความนั้น
-- default: true
-
 - /mail clear-all : เพื่อลบข้อความของผู้ที่ส่งมาทั้งหมด
-- default: true
-
 - /mail see <ชื่อผู้เล่น> : เพื่อดูข้อความที่เราส่งไปว่าเค้าอ่านรึยัง?
-- default: true
-
 - /report : แจ้งแอดมิน
-- default: true
