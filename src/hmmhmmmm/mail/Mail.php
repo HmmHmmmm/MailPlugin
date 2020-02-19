@@ -31,7 +31,7 @@ class Mail extends PluginBase implements Listener{
       $this->saveDefaultConfig();
       $this->prefix = "Mail";
       $this->facebook = "https://m.facebook.com/phonlakrit.knaongam.1";
-      $this->facebook = "https://m.youtube.com/channel/UCtjvLXDxDAUt-8CXV1eWevA";
+      $this->youtube = "https://m.youtube.com/channel/UCtjvLXDxDAUt-8CXV1eWevA";
       $this->form = new Form($this);
       $this->getServer()->getPluginManager()->registerEvents($this, $this);
       $this->getScheduler()->scheduleRepeatingTask(new MailTask($this), 20);
