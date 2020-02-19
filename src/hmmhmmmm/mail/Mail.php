@@ -60,7 +60,7 @@ class Mail extends PluginBase implements Listener{
       return $this->youtube;
    }
    public function getPluginInfo(): string{
-      $author $plugin->getDescription()->getAuthors();
+      $author $this->getDescription()->getAuthors();
       $text = "\n".$this->getPrefix()." ชื่อปลั๊กอิน ".$this->getDescription()->getName()."\n".$this->getPrefix()." เวอร์ชั่น ".$this->getDescription()->getVersion()."\n".$this->getPrefix()." รายชื่อผู้สร้าง ".implode(", ", $author)."\n".$this->getPrefix()." คำอธิบายของปลั๊กอิน: ปลั๊กอินนี้ทำแจก โปรดอย่าเอาไปขาย *หากจะเอาไปแจกต่อโปรดให้เครดิตด้วย*\n".$this->getPrefix()." เฟสบุ๊ค ".$this->getFacebook()."\n".$this->getPrefix()." ยูทูป ".$this->getYoutube()."\n".$this->getPrefix()." เว็บไซต์ ".$this->getDescription()->getWebsite();
       return $text;   }
    public function getForm(): Form{

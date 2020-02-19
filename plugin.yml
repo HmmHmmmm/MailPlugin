@@ -3,6 +3,7 @@ version: 2.3
 api: 3.11.0
 author: HmmHmmmmm
 main: hmmhmmmm\mail\Mail
+website: https://github.com/HmmHmmmm/MailPlugin
 
 permissions:
     mail.command:
