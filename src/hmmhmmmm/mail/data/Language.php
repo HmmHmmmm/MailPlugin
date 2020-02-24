@@ -10,6 +10,7 @@ class Language{
    private $plugin = null;
    private $data = null;
    private $lang = "?";
+   private $langVersion = 0;
    
    private $langEnglish = [
       "reset" => false,
@@ -264,7 +265,6 @@ class Language{
    
    public function getTranslate(string $key, array $arrayValue = []): string{
       $data = $this->getData();
-      
       if(!empty($arrayValue)){
          return vsprintf($data->getNested($key), $arrayValue);
       }
