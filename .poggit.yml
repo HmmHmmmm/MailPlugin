@@ -1,0 +1,12 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/HmmHmmmm/MailPlugin
+build-by-default: true
+branches:
+- master
+projects:
+  MailPlugin:
+    path: ""
+    icon: "images/3.0/Screenshot_2020-02-24-13-46-42-096_com.mojang.minecraftpe.jpg"
+    libs:
+    - src: jojoe77777/FormAPI/libFormAPI
+      version: ^1.3
+...
