@@ -5,7 +5,7 @@ branches:
 projects:
   MailPlugin:
     path: ""
-    icon: "images/3.0/Screenshot_2020-02-24-13-46-42-096_com.mojang.minecraftpe.jpg"
+    icon: "images/icon.png"
     libs:
     - src: jojoe77777/FormAPI/libFormAPI
       version: ^1.3

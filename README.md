@@ -1,4 +1,5 @@
 ## MailPlugin
+[![](https://poggit.pmmp.io/shield.state/MailPlugin)](https://poggit.pmmp.io/p/MailPlugin)
 
 [Thai](#thai)
 
@@ -25,15 +26,6 @@
 
 **วิธีใช้งาน**<br>
 - คลิปตัวอย่าง [คลิก](https://youtu.be/BML6U6NXe4E)
-
-
-## ดาวโหลด
-| version  | plugin support                        | Download  zip/phar                                                 |
-| ---- | ------------------------------------ | ---------------------------------------------------------- |
-| 1.0  | GenisysPro api 3.0.1 mcpe 1.1 [Click here](https://github.com/GenisysPro/GenisysPro) | [คลิก](https://github.com/HmmHmmmm/MailPlugin/releases/1.0) |
-| 2.0  | pocketmine api 3.11.0 mcpe 1.14 [Click here](https://github.com/pmmp/PocketMine-MP) | [คลิก](https://github.com/HmmHmmmm/MailPlugin/releases/2.0) |
-| 2.1  | pocketmine api 3.11.0 mcpe 1.14 [Click here](https://github.com/pmmp/PocketMine-MP) | [คลิก](https://github.com/HmmHmmmm/MailPlugin/releases/2.1) |
-| 3.0  | pocketmine api 3.11.0 mcpe 1.14 [Click here](https://github.com/pmmp/PocketMine-MP) | [คลิก](https://github.com/HmmHmmmm/MailPlugin/releases/3.0) |
 
 
 **Config**<br>
@@ -89,11 +81,15 @@ interface MailAPI{
 
 
 ## Images
-![icon](images/3.0/Screenshot_2020-02-24-13-46-24-210_com.mojang.minecraftpe.jpg)
-![icon](images/3.0/Screenshot_2020-02-24-13-46-07-051_com.mojang.minecraftpe.jpg)
-![icon](images/3.0/Screenshot_2020-02-24-13-46-42-096_com.mojang.minecraftpe.jpg)
-![icon](images/3.0/Screenshot_2020-02-24-13-47-11-379_com.mojang.minecraftpe.jpg)
-![icon](images/3.0/Screenshot_2020-02-24-13-58-50-672_com.mojang.minecraftpe.jpg)
+# [![1](images/3.0/1.png)]()
+
+# [![2](images/3.0/2.png)]()
+
+# [![3](images/3.0/3.png)]()
+
+# [![4](images/3.0/4.png)]()
+
+# [![5](images/3.0/5.png)]()
 
 
 ## LICENSE
@@ -121,15 +117,6 @@ interface MailAPI{
 
 **How to use**<br>
 - Sample clip [click](https://youtu.be/BML6U6NXe4E)
-
-
-## Download
-| version  | plugin support                        | Download  zip/phar                                                 |
-| ---- | ------------------------------------ | ---------------------------------------------------------- |
-| 1.0  | GenisysPro api 3.0.1 mcpe 1.1 [Click here](https://github.com/GenisysPro/GenisysPro) | [click](https://github.com/HmmHmmmm/MailPlugin/releases/1.0) |
-| 2.0  | pocketmine api 3.11.0 mcpe 1.14 [Click here](https://github.com/pmmp/PocketMine-MP) | [click](https://github.com/HmmHmmmm/MailPlugin/releases/2.0) |
-| 2.1  | pocketmine api 3.11.0 mcpe 1.14 [Click here](https://github.com/pmmp/PocketMine-MP) | [click](https://github.com/HmmHmmmm/MailPlugin/releases/2.1) |
-| 3.0  | pocketmine api 3.11.0 mcpe 1.14 [Click here](https://github.com/pmmp/PocketMine-MP) | [click](https://github.com/HmmHmmmm/MailPlugin/releases/3.0) |
 
 
 **Config**<br>
@@ -185,11 +172,15 @@ interface MailAPI{
 
 
 ## Images
-![icon](images/3.0/Screenshot_2020-02-24-13-46-24-210_com.mojang.minecraftpe.jpg)
-![icon](images/3.0/Screenshot_2020-02-24-13-46-07-051_com.mojang.minecraftpe.jpg)
-![icon](images/3.0/Screenshot_2020-02-24-13-46-42-096_com.mojang.minecraftpe.jpg)
-![icon](images/3.0/Screenshot_2020-02-24-13-47-11-379_com.mojang.minecraftpe.jpg)
-![icon](images/3.0/Screenshot_2020-02-24-13-58-50-672_com.mojang.minecraftpe.jpg)
+# [![1](images/3.0/1.png)]()
+
+# [![2](images/3.0/2.png)]()
+
+# [![3](images/3.0/3.png)]()
+
+# [![4](images/3.0/4.png)]()
+
+# [![5](images/3.0/5.png)]()
 
 
 ## LICENSE
