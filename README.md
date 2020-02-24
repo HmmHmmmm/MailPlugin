@@ -15,7 +15,7 @@
 Dowload Plugin FormAPI [Click here](https://poggit.pmmp.io/p/FormAPI)
 
 
-# Features of plugin
+**Features of plugin**<br>
 - Is a plugin send message find players (Can send messages offline have)
 - Can see my messages that sent to players, See if he read it?
 - Can store messages and delete messages
@@ -24,11 +24,11 @@ Dowload Plugin FormAPI [Click here](https://poggit.pmmp.io/p/FormAPI)
 - Have language thai,english (You can edit the language you don't like at/resources/language)
 
 
-# How to use
+**How to use**<br>
 - Sample clip [click](https://youtu.be/BML6U6NXe4E)
 
 
-# Command
+**Command**<br>
 - /mail : open gui form
 - /mail write <PlayerName> : And type in chat to send a message to that player
 - /mail read <NamePlayerWhoSentMessage> : Read the messages of players that have been submitted.
@@ -72,7 +72,7 @@ Dowload Plugin FormAPI [Click here](https://poggit.pmmp.io/p/FormAPI)
 - /report : แจ้งแอดมิน
 
 
-# Images
+**Images**<br>
 ![1](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/1.png)
 
 ![2](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/2.png)
