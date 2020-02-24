@@ -1,11 +1,11 @@
 ## MailPlugin
 
-[Thai](#Thai)
+[Thai](#thai)
 
-[English](#English)
+[English](#english)
 
 
-#Thai
+# Thai
 
 ```diff
 - ปลั๊กอินนี้จะไม่ทำงาน หากคุณไม่ได้ลงปลั๊กอิน FormAPI
@@ -100,7 +100,8 @@ interface MailAPI{
 ใบอนุญาต GPL-3.0 [license](https://github.com/HmmHmmmm/MailPlugin/blob/master/LICENSE)
 
 
-#English
+
+# English
 
 ```diff
 - This plugin will not work. If you don't have the plugin installed FormAPI
