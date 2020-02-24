@@ -3,9 +3,9 @@
 namespace hmmhmmmm\mail\ui;
 
 use hmmhmmmm\mail\Mail;
-use hmmhmmmm\mail\libs\jojoe77777\FormAPI\CustomForm;
-use hmmhmmmm\mail\libs\jojoe77777\FormAPI\ModalForm;
-use hmmhmmmm\mail\libs\jojoe77777\FormAPI\SimpleForm;
+use jojoe77777\FormAPI\CustomForm;
+use jojoe77777\FormAPI\ModalForm;
+use jojoe77777\FormAPI\SimpleForm;
 
 use pocketmine\Player;
 
