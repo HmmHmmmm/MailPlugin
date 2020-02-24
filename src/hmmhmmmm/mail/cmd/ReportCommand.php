@@ -1,6 +1,8 @@
 <?php
 
-namespace hmmhmmmm\mail;
+namespace hmmhmmmm\mail\cmd;
+
+use hmmhmmmm\mail\Mail;
 
 use pocketmine\Player;
 use pocketmine\command\Command;
@@ -19,10 +21,10 @@ class ReportCommand extends Command implements PluginIdentifiableCommand{
       return $this->plugin;
    }
    public function sendConsoleError(CommandSender $sender): void{
-      $sender->sendMessage("§cขออภัย: คำสั่งสามารถพิมพ์ได้เฉพาะในเกมส์");
+      $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("report.command.consoleError"));
    }
    public function sendPermissionError(CommandSender $sender): void{
-      $sender->sendMessage("§cขออภัย: คุณไม่สามารถพิมพ์คำสั่งนี้ได้");
+      $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("report.command.permissionError"));
    }
    
    public function execute(CommandSender $sender, string $commandLabel, array $args): bool{

@@ -2,38 +2,53 @@
 
 namespace hmmhmmmm\mail;
 
+use hmmhmmmm\mail\cmd\MailCommand;
+use hmmhmmmm\mail\cmd\ReportCommand;
+use hmmhmmmm\mail\data\Language;
+use hmmhmmmm\mail\data\PlayerData;
+use hmmhmmmm\mail\listener\EventListener;
+use hmmhmmmm\mail\scheduler\MailTask;
+use hmmhmmmm\mail\ui\Form;
+
 use pocketmine\Player;
-use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerChatEvent;
-use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 
-class Mail extends PluginBase implements Listener{
+class Mail extends PluginBase implements MailAPI{
    private static $instance = null;
    private $prefix = "?";
    private $facebook = "§cไม่มี";
    private $youtube = "§cไม่มี";
+   private $discord = "§cไม่มี";
+   private $language = null;
    private $form = null;
    private $formapi = null;
    public $array = [];
-
-   public static function getInstance(){
+   
+   public $langClass = [
+      "thai",
+      "english"
+   ];
+   
+   public static function getInstance(): Mail{
       return self::$instance;
    }
    public function onLoad(){
       self::$instance = $this;
    } 
+   
    public function onEnable(){
       @mkdir($this->getDataFolder());
       @mkdir($this->getDataFolder()."account/");
+      @mkdir($this->getDataFolder()."language/");
       $this->saveDefaultConfig();
       $this->prefix = "Mail";
-      $this->facebook = "https://m.facebook.com/phonlakrit.knaongam.1";
-      $this->youtube = "https://m.youtube.com/channel/UCtjvLXDxDAUt-8CXV1eWevA";
+      $this->facebook = "https://bit.ly/39ULjqk";
+      $this->youtube = "https://bit.ly/2HL1j28";
+      $this->discord = "https://discord.gg/n6CmNr";
       $this->form = new Form($this);
-      $this->getServer()->getPluginManager()->registerEvents($this, $this);
+      $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
       $this->getScheduler()->scheduleRepeatingTask(new MailTask($this), 20);
       $cmd = [
          new MailCommand($this),
@@ -42,13 +57,19 @@ class Mail extends PluginBase implements Listener{
       foreach($cmd as $command){
          $this->getServer()->getCommandMap()->register($command->getName(), $command);
       }
+      $langConfig = $this->getConfig()->getNested("language");
+      if(!in_array($langConfig, $this->langClass)){
+         $this->getLogger()->error("§cNot found language ".$langConfig.", Please try ".implode(", ", $this->langClass));
+         $this->getServer()->getPluginManager()->disablePlugin($this);
+      }else{
+         $this->language = new Language($this, $langConfig);
+      }
       if($this->getServer()->getPluginManager()->getPlugin("FormAPI") === null){
-         $this->getLogger()->critical("§cปลั๊กนี้จะไม่ทำงาน กรุณาลงปลั๊กอิน FormAPI");
+         $this->getLogger()->critical($this->language->getTranslate("notfound.plugin", ["FormAPI"]));
          $this->getServer()->getPluginManager()->disablePlugin($this);
       }else{
          $this->formapi = $this->getServer()->getPluginManager()->getPlugin("FormAPI");
       }
-      $this->getServer()->getLogger()->info($this->getPluginInfo());
    }
    public function getPrefix(): string{
       return "§e[§d".$this->prefix."§e]§f";
@@ -59,10 +80,12 @@ class Mail extends PluginBase implements Listener{
    public function getYoutube(): string{
       return $this->youtube;
    }
-   public function getPluginInfo(): string{
-      $author = $this->getDescription()->getAuthors();
-      $text = "\n".$this->getPrefix()." ชื่อปลั๊กอิน ".$this->getDescription()->getName()."\n".$this->getPrefix()." เวอร์ชั่น ".$this->getDescription()->getVersion()."\n".$this->getPrefix()." รายชื่อผู้สร้าง ".implode(", ", $author)."\n".$this->getPrefix()." คำอธิบายของปลั๊กอิน: ปลั๊กอินนี้ทำแจก โปรดอย่าเอาไปขาย *หากจะเอาไปแจกต่อโปรดให้เครดิตด้วย*\n".$this->getPrefix()." เฟสบุ๊ค ".$this->getFacebook()."\n".$this->getPrefix()." ยูทูป ".$this->getYoutube()."\n".$this->getPrefix()." เว็บไซต์ ".$this->getDescription()->getWebsite();
-      return $text;   }
+   public function getDiscord(): string{
+      return $this->discord;
+   }
+   public function getLanguage(): Language{
+      return $this->language;
+   }
    public function getForm(): Form{
       return $this->form;
    }
@@ -72,23 +95,19 @@ class Mail extends PluginBase implements Listener{
    public function getPlayerData(string $name): PlayerData{
       return new PlayerData($this, $name);
    }
-   public function onPlayerLogin(PlayerLoginEvent $event){
-      $player = $event->getPlayer();
-      $playerData = $this->getPlayerData($player->getName());
-      if(!$playerData->isData()){
-         $playerData->register();
-      }else{
-         $playerData->update();
-      }
-   }
-   public function onPlayerChat(PlayerChatEvent $event){
-      $player = $event->getPlayer();
-      $message = $event->getMessage();
-      if(isset($this->array[$player->getName()])){
-         $event->setCancelled(true);                  
-         $this->addMail($this->array[$player->getName()], $player, $message);
-         unset($this->array[$player->getName()]);
-      }
+   public function getPluginInfo(): string{
+      $author = implode(", ", $this->getDescription()->getAuthors());
+      $arrayText = [
+         $this->getPrefix()." ".$this->getLanguage()->getTranslate("plugininfo.name", [$this->getDescription()->getName()]),
+         $this->getPrefix()." ".$this->getLanguage()->getTranslate("plugininfo.version", [$this->getDescription()->getVersion()]),
+         $this->getPrefix()." ".$this->getLanguage()->getTranslate("plugininfo.author", [$author]),
+         $this->getPrefix()." ".$this->getLanguage()->getTranslate("plugininfo.description"),
+         $this->getPrefix()." ".$this->getLanguage()->getTranslate("plugininfo.facebook", [$this->getFacebook()]),
+         $this->getPrefix()." ".$this->getLanguage()->getTranslate("plugininfo.youtube", [$this->getYoutube()]),
+         $this->getPrefix()." ".$this->getLanguage()->getTranslate("plugininfo.website", [$this->getDescription()->getWebsite()]),
+         $this->getPrefix()." ".$this->getLanguage()->getTranslate("plugininfo.discord", [$this->getDiscord()]),
+      ];
+      return implode("\n", $arrayText);
    }
    public function isMail(string $name): bool{
       $playerData = $this->getPlayerData($name);
@@ -157,10 +176,24 @@ class Mail extends PluginBase implements Listener{
       $data = $playerData->getConfig()->getAll();       
       return $data["mail"]["message"][$senderName]["write"][$msgCount]["read"];
    }
-   public function setMailRead(string $name, string $senderName, int $msgCount, string $message = "§cยังไม่อ่าน"): void{
+   public function setMailRead(string $name, string $senderName, int $msgCount, bool $read = false): void{
       $playerData = $this->getPlayerData($name);
-      $data = $playerData->getConfig();       
-      $data->setNested("mail.message.".$senderName.".write.".$msgCount.".read", $message);
+      $data = $playerData->getConfig();
+      if($read){
+         if($this->getLanguage()->getLang() == "thai"){
+            $data->setNested("mail.message.".$senderName.".write.".$msgCount.".read", "§aอ่านแล้ว");
+         }
+         if($this->getLanguage()->getLang() == "english"){
+            $data->setNested("mail.message.".$senderName.".write.".$msgCount.".read", "§aRead already");
+         }
+      }else{
+         if($this->getLanguage()->getLang() == "thai"){
+            $data->setNested("mail.message.".$senderName.".write.".$msgCount.".read", "§cยังไม่อ่าน");
+         }
+         if($this->getLanguage()->getLang() == "english"){
+            $data->setNested("mail.message.".$senderName.".write.".$msgCount.".read", "§cNot yet read");
+         }
+      }
       $data->save();
    }
    public function getMailMsg(string $name, string $senderName, int $msgCount): string{
@@ -193,8 +226,8 @@ class Mail extends PluginBase implements Listener{
       if(!(in_array($senderName, $data["mail"]["players"]))){
          $data["mail"]["players"][] = $senderName;
       }
-      $config->setAll($data);       
-      $config->save();       
+      $config->setAll($data);
+      $config->save();
    }
    public function addMail(string $name, Player $sender, string $message, bool $tip = true): void{
       $playerData = $this->getPlayerData($name);
@@ -209,7 +242,7 @@ class Mail extends PluginBase implements Listener{
             $groupSender = "§ePlayer";
          }
       }
-      $message1 = "§fจาก [".$groupSender."§f] §e".$senderName." §fวันที่/เวลา §a".date("d/m/Y H:i:s")."\n§fได้เขียนว่า §b".$message;
+      $message1 = $this->getLanguage()->getTranslate("addmail.message1", [$groupSender, $senderName, date("d/m/Y H:i:s"), $message]);
       if($this->isMailSender($name, $senderName)){
          $msgWrite = $this->getMailSenderWrite($name, $senderName); 
          $msgCount = $this->getCountMailSenderWrite($name, $senderName) + 1;
@@ -227,28 +260,28 @@ class Mail extends PluginBase implements Listener{
          $count = 1;
       }
       $this->setCountMailSender($name, $senderName, $count);
-      $this->setMailRead($name, $senderName, $msgCount, "§cยังไม่อ่าน");
+      $this->setMailRead($name, $senderName, $msgCount, false);
       $this->setMailMsg($name, $senderName, $msgCount, $message1);
       $count = $this->getCountMail($name) + 1;
       $this->setCountMail($name, $count);
       $this->setMailPlayers($senderName, $name);
       $player = $this->getServer()->getPlayer($name); 
-      $sender->sendMessage($this->getPrefix()." §aได้ส่งข้อความให้กับ ".$name." แล้ว คุณได้เขียนข้อความว่า ".$message);
+      $sender->sendMessage($this->getPrefix()." ".$this->getLanguage()->getTranslate("addmail.message2", [$name, $message]));
       if($player instanceof Player){
          if($tip){
-            $player->sendMessage($this->getPrefix()." คุณมี §a1§fข้อความใหม่! จากผู้เล่นชื่อ §e".$senderName." §fพิม /mail read ".$senderName." อ่านดูสิ!"); 
-            $player->addTitle(("§fคุณมี §a1§fข้อความใหม่!"), ("§fจากผู้เล่นชื่อ §e".$senderName." §fพิม /mail อ่านดูสิ!"));
+            $player->sendMessage($this->getPrefix()." ".$this->getLanguage()->getTranslate("addmail.message3", [$senderName, $senderName]));
+            $player->addTitle(($this->getLanguage()->getTranslate("addmail.titleline1")), ($this->getLanguage()->getTranslate("addmail.titleline2", [$senderName])));
          }
       }
    }     
    public function readMail(string $name, string $senderName, int $msgCount): string{
-      return "§fหมายเลขข้อความที่ §b".$msgCount." ".$this->getMailRead($name, $senderName, $msgCount)."\n".$this->getMailMsg($name, $senderName, $msgCount)."\n§f-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-";
+      return $this->getLanguage()->getTranslate("readmail", [$msgCount, $this->getMailRead($name, $senderName, $msgCount), $this->getMailMsg($name, $senderName, $msgCount)]);
    }
    public function listMail(string $name, string $senderName): string{
-      return "§f".$senderName." §f(§a".$this->getCountMailSender($name, $senderName)."§f) ข้อความ";
+      return $this->getLanguage()->getTranslate("listmail", [$senderName, $this->getCountMailSender($name, $senderName)]);
    }
    public function countMail(string $name): string{
-      return $this->getPrefix()." คุณมี (§a".$this->getCountMail($name)."§f) ข้อความจากทั้งหมด พิม /mail อ่านดูสิ!";
+      return $this->getPrefix()." ".$this->getLanguage()->getTranslate("countmail", [$this->getCountMail($name)]);
    }
    public function removeCountMailSender(string $name, string $senderName): void{
       if(!($this->getCountMailSender($name, $senderName) == 0)){
@@ -269,16 +302,16 @@ class Mail extends PluginBase implements Listener{
    }
    public function delMailSender(Player $player, string $senderName, int $msgCount): void{
       if(!$this->isMailSender($player->getName(), $senderName)){
-         $player->sendMessage("§cไม่พบข้อความของ ".$senderName);
+         $player->sendMessage($this->getPrefix()." ".$this->getLanguage()->getTranslate("mail.command.clear.error3", [$senderName]));
          return;
       }
       if(!$this->isCountMailSenderWrite($player->getName(), $senderName, $msgCount)){
-         $player->sendMessage("§cไม่พบหมายเลขข้อความ ".$msgCount);
+         $player->sendMessage($this->getPrefix()." ".$this->getLanguage()->getTranslate("mail.command.clear.error4", [$msgCount]));
          return;
       }
       $this->removeCountMailSender($player->getName(), $senderName);
       $this->removeMailSender($player->getName(), $senderName, $msgCount);
-      $player->sendMessage($this->getPrefix()." §aได้ลบข้อความของ ".$senderName." หมายเลขข้อความ ".$msgCount." สำเร็จ");
+      $player->sendMessage($this->getPrefix()." ".$this->getLanguage()->getTranslate("mail.command.clear.complete", [$senderName, $msgCount]));
    }
    public function resetMail(string $name): void{
       $playerData = $this->getPlayerData($name);

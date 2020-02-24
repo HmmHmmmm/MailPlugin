@@ -1,6 +1,8 @@
 <?php
 
-namespace hmmhmmmm\mail;
+namespace hmmhmmmm\mail\ui;
+
+use hmmhmmmm\mail\Mail;
 
 use pocketmine\Player;
 
@@ -21,7 +23,7 @@ class Form{
          if(!($data === null)){
             if($data == 0){
                if(!$player->hasPermission("mail.command.write")){
-                  $text = "§cเกิดข้อผิดพลาด\n§eคุณไม่สามารถใช้งานได้";                 
+                  $text = $this->getPlugin()->getLanguage()->getTranslate("form.menu.error1");
                   $this->MailMenu($player, $text);
                   return;
                }
@@ -29,12 +31,12 @@ class Form{
             }
             if($data == 1){
                if(!$player->hasPermission("mail.command.see")){
-                  $text = "§cเกิดข้อผิดพลาด\n§eคุณไม่สามารถใช้งานได้";                 
+                  $text = $this->getPlugin()->getLanguage()->getTranslate("form.menu.error1");
                   $this->MailMenu($player, $text);
                   return;
                }
                if($this->getPlugin()->getCountMailPlayers($player->getName()) == 0){
-                  $text = "§cเกิดข้อผิดพลาด\n§eคุณยังไม่ได้ส่งข้อความหาใคร";                 
+                  $text = $this->getPlugin()->getLanguage()->getTranslate("form.menu.error2");
                   $this->MailMenu($player, $text);
                   return;
                }
@@ -42,12 +44,12 @@ class Form{
             }
             if($data == 2){
                if(!$player->hasPermission("mail.command.read") && !$player->hasPermission("mail.command.readall")){
-                  $text = "§cเกิดข้อผิดพลาด\n§eคุณไม่สามารถใช้งานได้";                 
+                  $text = $this->getPlugin()->getLanguage()->getTranslate("form.menu.error1");
                   $this->MailMenu($player, $text);
                   return;
                }
                if($this->getPlugin()->getMailSenderCount($player->getName()) == 0){
-                  $text = "§cเกิดข้อผิดพลาด\n§eไม่มีใครส่งข้อความหาคุณ";
+                  $text = $this->getPlugin()->getLanguage()->getTranslate("form.menu.error3");
                   $this->MailMenu($player, $text);
                   return;
                }
@@ -55,7 +57,7 @@ class Form{
             }
             if($data == 3){
                if(!$player->hasPermission("mail.command.clearall")){
-                  $text = "§cเกิดข้อผิดพลาด\n§eคุณไม่สามารถใช้งานได้";                 
+                  $text = $this->getPlugin()->getLanguage()->getTranslate("form.menu.error1");
                   $this->MailMenu($player, $text);
                   return;
                }
@@ -65,10 +67,10 @@ class Form{
       });
       $form->setTitle($this->getPrefix()." Menu");
       $form->setContent($content);
-      $form->addButton("§fส่งข้อความหาผู้เล่น");
-      $form->addButton("§fดูข้อความที่เคยส่งไป");
-      $form->addButton("§fคุณมี (§a".$this->getPlugin()->getCountMail($player->getName())."§f) ข้อความจากทั้งหมด");
-      $form->addButton("§cลบข้อความของผู้ที่ส่งมาทั้งหมด");
+      $form->addButton($this->getPlugin()->getLanguage()->getTranslate("form.menu.button1"));
+      $form->addButton($this->getPlugin()->getLanguage()->getTranslate("form.menu.button2"));
+      $form->addButton($this->getPlugin()->getLanguage()->getTranslate("form.menu.button3", [$this->getPlugin()->getCountMail($player->getName())]));
+      $form->addButton($this->getPlugin()->getLanguage()->getTranslate("form.menu.button4"));
       $form->sendToPlayer($player);
    }
    public function MailWrite(Player $player, string $content = ""): void{
@@ -76,25 +78,25 @@ class Form{
          if($data == null){
             return;
          }
-         $name = explode(" ", $data[0]); 
+         $name = explode(" ", $data[1]); 
          if($name[0] == null){
-            $text = "§cเกิดข้อผิดพลาด\n§e<ชื่อผู้เล่น> จำเป็นต้องใส่"; 
+            $text = $this->getPlugin()->getLanguage()->getTranslate("form.write.error1");
             $this->MailWrite($player, $text);
             return;
          }
          $playerData = $this->getPlugin()->getPlayerData($name[0]);
          if(!$playerData->isData()){
-            $text = "§cเกิดข้อผิดพลาด\n§eไม่พบชื่อของผู้เล่น";
-            $this->MailWrite($player, $text);                  
-            return;
-         }
-         $message = explode(" ", $data[1]); 
-         if($message[0] == null){
-            $text = "§cเกิดข้อผิดพลาด\n§e<ข้อความที่จะส่ง> จำเป็นต้องใส่"; 
+            $text = $this->getPlugin()->getLanguage()->getTranslate("form.write.error2");
             $this->MailWrite($player, $text);
             return;
          }
-         $message = $data[1];
+         $message = explode(" ", $data[2]); 
+         if($message[0] == null){
+            $text = $this->getPlugin()->getLanguage()->getTranslate("form.write.error3");
+            $this->MailWrite($player, $text);
+            return;
+         }
+         $message = $data[2];
          $this->getPlugin()->addMail($playerData->getName(), $player, $message, false);
          $pOnline = $this->getPlugin()->getServer()->getPlayer($name[0]);
          if($pOnline instanceof Player){
@@ -102,9 +104,9 @@ class Form{
          }
       });
       $form->setTitle($this->getPrefix()." Write");
-      $form->addInput("§eชื่อผู้เล่น");
-      $form->addInput("§eข้อความที่จะส่ง");
       $form->addLabel($content);
+      $form->addInput($this->getPlugin()->getLanguage()->getTranslate("form.write.input1"));
+      $form->addInput($this->getPlugin()->getLanguage()->getTranslate("form.write.input2"));
       $form->sendToPlayer($player);
    }
    public function MailSeeMsg(Player $player, string $senderName, string $content = ""): void{
@@ -114,7 +116,7 @@ class Form{
          if(!($data === null)){
             $message = explode(" ", $data[1]); 
             if($message[0] == null){
-               $text = "§cเกิดข้อผิดพลาด\n§e<ส่งข้อความ> จำเป็นต้องใส่\n".$content;
+               $text = $this->getPlugin()->getLanguage()->getTranslate("form.seemsg.error1")."\n".$content;
                $this->MailSeeMsg($player, $senderName, $text);
                return;
             }
@@ -127,13 +129,13 @@ class Form{
          
       });
       if($pOnline instanceof Player){
-         $online = "§aออนไลน์";
+         $online = $this->getPlugin()->getLanguage()->getTranslate("form.seemsg.online");
       }else{
-         $online = "§cออฟไลน์";
+         $online = $this->getPlugin()->getLanguage()->getTranslate("form.seemsg.offline");
       }
-      $form->setTitle("§l§fห้องแชทของ §e".$senderName." §fตอนนี้ ".$online." §fอยู่");		          	
+      $form->setTitle($this->getPlugin()->getLanguage()->getTranslate("form.seemsg.title", [$senderName, $online]));
       $form->addLabel($content);
-      $form->addInput("", "ส่งข้อความ");
+      $form->addInput("", $this->getPlugin()->getLanguage()->getTranslate("form.seemsg.input1"));
       $form->sendToPlayer($player);
    }
    public function MailSeeAll(Player $player, string $content = ""): void{
@@ -144,7 +146,7 @@ class Form{
          if(!($data === null)){
             $name = $array[$data];
             if(!$this->getPlugin()->isMailSender($name, strtolower($player->getName()))){
-               $text = "§cเกิดข้อผิดพลาด\n§eไม่พบข้อความของคุณ? คุณไม่ได้ส่งข้อความไปหาคนนี้ หรือ เค้าลบข้อความของคุณไปแล้ว";                 
+               $text = $this->getPlugin()->getLanguage()->getTranslate("form.seeall.error1");
                $this->MailSeeAll($player, $text);
                return;
             }
@@ -170,7 +172,7 @@ class Form{
             if($data[1] == 0){
                $message = explode(" ", $data[2]); 
                if($message[0] == null){
-                  $text = "§cเกิดข้อผิดพลาด\n§e<ตอบกลับ> จำเป็นต้องใส่\n".$content;
+                  $text = $this->getPlugin()->getLanguage()->getTranslate("form.readmsg.error1")."\n".$content;
                   $this->MailReadMsg($player, $senderName, $text);
                   return;
                }
@@ -183,7 +185,7 @@ class Form{
             if($data[1] == 1){
                $msgCount = explode(" ", $data[2]); 
                if($msgCount[0] == null && !is_numeric($msgCount[0])){
-                  $text = "§cเกิดข้อผิดพลาด\n§e<ลบข้อความ> จำเป็นต้องใส่และเขียนให้เป็นตัวเลข\n".$content;
+                  $text = $this->getPlugin()->getLanguage()->getTranslate("form.readmsg.error2")."\n".$content;
                   $this->MailReadMsg($player, $senderName, $text);
                   return;
                }
@@ -193,14 +195,14 @@ class Form{
          }
       });
       if($pOnline instanceof Player){
-         $online = "§aออนไลน์";
-         $pOnline->sendMessage($this->getPrefix()." ผู้เล่น §b".$player->getName()." §fได้อ่านข้อความของคุณแล้ว!");
+         $online = $this->getPlugin()->getLanguage()->getTranslate("form.readmsg.online");
+         $pOnline->sendMessage($this->getPrefix()." ".$this->getPlugin()->getLanguage()->getTranslate("form.readmsg.complete", [$player->getName()]));
       }else{
-         $online = "§cออฟไลน์";
+         $online = $this->getPlugin()->getLanguage()->getTranslate("form.readmsg.offline");
       }
-      $form->setTitle("§l§fห้องแชทของ §e".$senderName." §fตอนนี้ ".$online." §fอยู่");
+      $form->setTitle($this->getPlugin()->getLanguage()->getTranslate("form.readmsg.title", [$senderName, $online]));
       $form->addLabel($content);
-      $form->addDropdown("เมนู", ["ตอบกลับ", "ลบข้อความ\nกรุณาใส่หมายเลขข้อความ"]); 
+      $form->addDropdown($this->getPlugin()->getLanguage()->getTranslate("form.readmsg.dropdown1.title"), [$this->getPlugin()->getLanguage()->getTranslate("form.readmsg.dropdown1.step1"), $this->getPlugin()->getLanguage()->getTranslate("form.readmsg.dropdown1.step2")]); 
       $form->addInput("");
       $form->sendToPlayer($player);
    }
@@ -215,7 +217,7 @@ class Form{
             $this->getPlugin()->setCountMail($player->getName(), $count);
             $this->getPlugin()->setCountMailSender($player->getName(), $name, 0);
             foreach($this->getPlugin()->getMailSenderWrite($player->getName(), $name) as $msgCount2){
-               $this->getPlugin()->setMailRead($player->getName(), $name, $msgCount2, "§aอ่านแล้ว");
+               $this->getPlugin()->setMailRead($player->getName(), $name, $msgCount2, true);
             }
             foreach($this->getPlugin()->getMailSenderWrite($player->getName(), $name) as $msgCount2){
                $array2[] = $this->getPlugin()->readMail($player->getName(), $name, $msgCount2);
@@ -236,17 +238,17 @@ class Form{
          if(!($data === null)){
             if($data == 1){//ปุ่ม1
                $this->getPlugin()->resetMail($player->getName());
-               $player->sendMessage($this->getPrefix()." §aลบข้อความของผู้ที่ส่งมาทั้งหมดเรียบร้อย!");
+               $player->sendMessage($this->getPrefix()." ".$this->getPlugin()->getLanguage()->getTranslate("form.clearall.complete"));
             }
             if($data == 0){//ปุ่ม2
             }
          }
       });
       $form->setTitle($this->getPrefix()." ClearAll");
-      $text = "§fคุณแน่ใจแล้วใช่มั้ย? ที่จะล้างข้อความทั้งหมด\nหากล้างแล้ว §cข้อความของผู้เล่นที่ส่งมาหาคุณจะหายทั้งหมด\n§fแต่ ข้อความที่คุณส่งหาผู้เล่นจะไม่หาย";
+      $text = $this->getPlugin()->getLanguage()->getTranslate("form.clearall.content");
       $form->setContent($text);
-      $form->setButton1("§aตกลง"); 
-      $form->setButton2("§cยกเลิก");
+      $form->setButton1($this->getPlugin()->getLanguage()->getTranslate("form.clearall.button1")); 
+      $form->setButton2($this->getPlugin()->getLanguage()->getTranslate("form.clearall.button2"));
       $form->sendToPlayer($player);
    }
    public function MailAdd(Player $player, string $senderName): void{
@@ -269,7 +271,7 @@ class Form{
                $this->getPlugin()->setCountMail($player->getName(), $count);
                $this->getPlugin()->setCountMailSender($player->getName(), $name, 0);
                foreach($this->getPlugin()->getMailSenderWrite($player->getName(), $name) as $msgCount2){
-                  $this->getPlugin()->setMailRead($player->getName(), $name, $msgCount2, "§aอ่านแล้ว");
+                  $this->getPlugin()->setMailRead($player->getName(), $name, $msgCount2, true);
                }
                foreach($this->getPlugin()->getMailSenderWrite($player->getName(), $name) as $msgCount2){
                   $array2[] = $this->getPlugin()->readMail($player->getName(), $name, $msgCount2);
@@ -282,31 +284,38 @@ class Form{
          }
       });
       $form->setTitle($this->getPrefix()." Add");
-      $text = $this->getPrefix()." ผู้เล่น [".$groupSender."§f] §d".$sender->getName()." §fได้ส่งข้อความหาคุณ\nคุณต้องการอ่านหรือไม่?";
+      $text = $this->getPrefix()." ".$this->getPlugin()->getLanguage()->getTranslate("form.add.content", [$groupSender, $sender->getName()]);
       $form->setContent($text);
-      $form->setButton1("§aอ่าน"); 
-      $form->setButton2("§eเก็บไว้");
+      $form->setButton1($this->getPlugin()->getLanguage()->getTranslate("form.add.button1")); 
+      $form->setButton2($this->getPlugin()->getLanguage()->getTranslate("form.add.button2"));
       $form->sendToPlayer($player);
    }
    public function Report(Player $player, string $content = ""): void{
       $senderName = $this->getPlugin()->getConfig()->getNested("report.name");
       $name = $senderName;
-      if($this->getPlugin()->isMailSender($name, $player->getName())){
-         foreach($this->getPlugin()->getMailSenderWrite($name, $player->getName()) as $msgCount2){
-            $array2[] = $this->getPlugin()->readMail($name, $player->getName(), $msgCount2);
+      $playerData = $this->getPlugin()->getPlayerData($name);
+      if(!$playerData->isData()){
+         $text = $this->getPlugin()->getLanguage()->getTranslate("form.report.error3", [$name]);
+         $this->MessageUI($player, $text);
+         return;
+      }
+      if($this->getPlugin()->isMailSender($name, strtolower($player->getName()))){
+         foreach($this->getPlugin()->getMailSenderWrite($name, strtolower($player->getName())) as $msgCount2){
+            $array2[] = $this->getPlugin()->readMail($name, strtolower($player->getName()), $msgCount2);
          }
          $msg = implode("\n", $array2);
-         $content = "§f[§bReport§f] คุณสามารถ report ได้ดังนี้\n§e1.§fแจ้งให้เพิ่มระบบได้\n§e2.§fแจ้งให้แก้บัคในเซิฟต่างๆ #อันนี้มีรางวัลให้\n§e3.§fฝากข้อความหาแอดมินได้\n§e4.§fแจ้งปัญหาต่างๆ\n§a[ข้อความที่คุณเคยแจ้งไป]\n".$msg;
+         $content = $this->getPlugin()->getLanguage()->getTranslate("form.report.content")."\n§a[".$this->getPlugin()->getLanguage()->getTranslate("form.report.reportmsg")."]\n".$msg;
       }else{
-         $content = "§f[§bReport§f] คุณสามารถ report ได้ดังนี้\n§e1.§fแจ้งให้เพิ่มระบบได้\n§e2.§fแจ้งให้แก้บัคในเซิฟต่างๆ #อันนี้มีรางวัลให้\n§e3.§fฝากข้อความหาแอดมินได้\n§e4.§fแจ้งปัญหาต่างๆ";
+         $content = $this->getPlugin()->getLanguage()->getTranslate("form.report.content");
       }
       $pOnline = $this->getPlugin()->getServer()->getPlayer($senderName);
       $form = $this->getPlugin()->getFormAPI()->createCustomForm(function ($player, $data) use ($senderName, $content, $pOnline){
          if(!($data === null)){
+            $senderName = strtolower($senderName);
             if($data[1] == 0){
                $message = explode(" ", $data[2]); 
                if($message[0] == null){
-                  $text = "§cเกิดข้อผิดพลาด\n§e<ส่งข้อความ> จำเป็นต้องใส่\n".$content;
+                  $text = $this->getPlugin()->getLanguage()->getTranslate("form.report.error1")."\n".$content;
                   $this->Report($player, $text);
                   return;
                }
@@ -318,7 +327,7 @@ class Form{
             }
             if($data[1] == 1){
                if(!$this->getPlugin()->isMailSender($player->getName(), $senderName)){
-                  $text = "§cเกิดข้อผิดพลาด\n§eแอดมินยังไม่ได้ตอบกลับ";
+                  $text = $this->getPlugin()->getLanguage()->getTranslate("form.report.error2");
                   $this->Report($player, $text);
                   return;
                }
@@ -327,7 +336,7 @@ class Form{
                $this->getPlugin()->setCountMail($player->getName(), $count);
                $this->getPlugin()->setCountMailSender($player->getName(), $name, 0);
                foreach($this->getPlugin()->getMailSenderWrite($player->getName(), $name) as $msgCount2){
-                  $this->getPlugin()->setMailRead($player->getName(), $name, $msgCount2, "§aอ่านแล้ว");
+                  $this->getPlugin()->setMailRead($player->getName(), $name, $msgCount2, true);
                }
                foreach($this->getPlugin()->getMailSenderWrite($player->getName(), $name) as $msgCount2){
                   $array2[] = $this->getPlugin()->readMail($player->getName(), $name, $msgCount2);
@@ -338,13 +347,24 @@ class Form{
          }
       });
       if($pOnline instanceof Player){
-         $online = "§aออนไลน์";
+         $online = $this->getPlugin()->getLanguage()->getTranslate("form.report.online");
       }else{
-         $online = "§cออฟไลน์";
+         $online = $this->getPlugin()->getLanguage()->getTranslate("form.report.offline");
       }
-      $form->setTitle("§l§bReport ตอนนี้ผู้ดูแล ".$online." §fอยู่");
+      $form->setTitle($this->getPlugin()->getLanguage()->getTranslate("form.report.title", [$online]));
       $form->addLabel($content);
-      $form->addDropdown("เมนู", ["ส่งข้อความ", "ดูข้อความที่แอดมินตอบกลับ\nแล้วกด Submit"]); 
+      $form->addDropdown($this->getPlugin()->getLanguage()->getTranslate("form.report.dropdown1.title"), [$this->getPlugin()->getLanguage()->getTranslate("form.report.dropdown1.step1"), $this->getPlugin()->getLanguage()->getTranslate("form.report.dropdown1.step2")]); 
       $form->addInput("");
+      $form->sendToPlayer($player);
+   }
+   public function MessageUI(Player $player, string $content = ""): void{
+      $form = $this->getPlugin()->getFormAPI()->createSimpleForm(function ($player, $data){
+         if($data === null){
+            return;
+         }
+      });
+      $form->setTitle($this->getPrefix()." Message UI");
+      $form->setContent($content);
+      $form->addButton($this->getPlugin()->getLanguage()->getTranslate("form.clearall.button1"));
       $form->sendToPlayer($player);
    }}

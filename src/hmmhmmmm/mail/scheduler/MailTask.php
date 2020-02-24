@@ -1,6 +1,8 @@
 <?php
 
-namespace hmmhmmmm\mail;
+namespace hmmhmmmm\mail\scheduler;
+
+use hmmhmmmm\mail\Mail;
 
 use pocketmine\scheduler\Task;
 

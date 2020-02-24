@@ -1,6 +1,8 @@
 <?php
 
-namespace hmmhmmmm\mail;
+namespace hmmhmmmm\mail\cmd;
+
+use hmmhmmmm\mail\Mail;
 
 use pocketmine\Player;
 use pocketmine\command\Command;
@@ -18,10 +20,10 @@ class MailCommand extends Command implements PluginIdentifiableCommand{
       return $this->plugin;
    }
    public function sendConsoleError(CommandSender $sender): void{
-      $sender->sendMessage("§cขออภัย: คำสั่งสามารถพิมพ์ได้เฉพาะในเกมส์");
+      $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.consoleError"));
    }
    public function sendPermissionError(CommandSender $sender): void{
-      $sender->sendMessage("§cขออภัย: คุณไม่สามารถพิมพ์คำสั่งนี้ได้");
+      $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.permissionError"));
    }
    public function getPrefix(): string{
       return $this->getPlugin()->getPrefix();
@@ -29,31 +31,31 @@ class MailCommand extends Command implements PluginIdentifiableCommand{
    public function sendHelp(CommandSender $sender): void{
       $sender->sendMessage($this->getPrefix()." : §fCommand");
       if($sender->hasPermission("mail.command.info")){
-         $sender->sendMessage("§a/mail info : §fเครดิตผู้สร้างปลั๊กอิน");
+         $sender->sendMessage("§a".$this->getPlugin()->getLanguage()->getTranslate("mail.command.info.usage")." : ".$this->getPlugin()->getLanguage()->getTranslate("mail.command.info.description"));
       }
       if($sender->hasPermission("mail.command.write")){
-         $sender->sendMessage("§a/mail write <ชื่อผู้เล่น> : §fแล้วพิมที่แชทเขียนข้อความเพื่อส่งข้อความให้ผู้เล่นคนนั้น");
+         $sender->sendMessage("§a".$this->getPlugin()->getLanguage()->getTranslate("mail.command.write.usage")." : ".$this->getPlugin()->getLanguage()->getTranslate("mail.command.write.description"));
       }
       if($sender->hasPermission("mail.command.read")){
-         $sender->sendMessage("§a/mail read <ชื่อผู้ที่ส่งข้อความ> : §fอ่านข้อความผู้ที่ส่งมา");
+         $sender->sendMessage("§a".$this->getPlugin()->getLanguage()->getTranslate("mail.command.read.usage")." : ".$this->getPlugin()->getLanguage()->getTranslate("mail.command.read.description"));
       }
       if($sender->hasPermission("mail.command.readall")){
-         $sender->sendMessage("§a/mail read-all : §fอ่านข้อความผู้ที่ส่งมาทั้งหมด");
+         $sender->sendMessage("§a".$this->getPlugin()->getLanguage()->getTranslate("mail.command.readall.usage")." : ".$this->getPlugin()->getLanguage()->getTranslate("mail.command.readall.description"));
       }
       if($sender->hasPermission("mail.command.clear")){
-         $sender->sendMessage("§a/mail clear <ชื่อผู้ที่ส่งข้อความ> <หมายเลขข้อความ> : §fเพื่อลบข้อความนั้น");
+         $sender->sendMessage("§a".$this->getPlugin()->getLanguage()->getTranslate("mail.command.clear.usage")." : ".$this->getPlugin()->getLanguage()->getTranslate("mail.command.clear.description"));
       }
       if($sender->hasPermission("mail.command.clearall")){
-         $sender->sendMessage("§a/mail clear-all : §fเพื่อลบข้อความของผู้ที่ส่งมาทั้งหมด");
+         $sender->sendMessage("§a".$this->getPlugin()->getLanguage()->getTranslate("mail.command.clearall.usage")." : ".$this->getPlugin()->getLanguage()->getTranslate("mail.command.clearall.description"));
       }
       if($sender->hasPermission("mail.command.see")){
-         $sender->sendMessage("§a/mail see <ชื่อผู้เล่น> : §fเพื่อดูข้อความที่เราส่งไปว่าเค้าอ่านรึยัง?");
+         $sender->sendMessage("§a".$this->getPlugin()->getLanguage()->getTranslate("mail.command.see.usage")." : ".$this->getPlugin()->getLanguage()->getTranslate("mail.command.see.description"));
       }
       if($sender->hasPermission("mail.command.read") && $sender->hasPermission("mail.command.readall")){
-         $sender->sendMessage("§fคุณมี (§a".$this->getPlugin()->getCountMail($sender->getName())."§f) ข้อความ");
-         $sender->sendMessage("§eรายชื่อ ผู้ที่ส่งข้อความ มาหาคุณ:");
+         $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.sendHelp.countmail", [$this->getPlugin()->getCountMail($sender->getName())]));
+         $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.sendHelp.listplayer"));
          if($this->getPlugin()->getMailSenderCount($sender->getName()) == 0){
-            $sender->sendMessage("§cไม่มี");
+            $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.sendHelp.notfoundmessage"));
          }else{
             foreach($this->getPlugin()->getMailSender($sender->getName()) as $playerName){
                $sender->sendMessage($this->getPlugin()->listMail($sender->getName(), $playerName));
@@ -68,10 +70,10 @@ class MailCommand extends Command implements PluginIdentifiableCommand{
       }
       if(empty($args)){
          $this->getPlugin()->getForm()->MailMenu($sender);
-         $sender->sendMessage("§eคุณสามารถดูคำสั่งเพิ่มเติมได้โดยใช้ /mail help");
+         $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.sendHelp.empty"));
          return true;
       }
-      $sub = array_shift($args);            
+      $sub = array_shift($args);
       if(isset($sub)){
          switch($sub){
             case "help":
@@ -91,17 +93,17 @@ class MailCommand extends Command implements PluginIdentifiableCommand{
                   return true;
                }
                if(count($args) < 1){
-                  $sender->sendMessage("§cลอง: /mail write <ชื่อผู้เล่น>");
+                  $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.write.error1", [$this->getPlugin()->getLanguage()->getTranslate("mail.command.write.usage")]));
                   return true;
                }
                $name = array_shift($args);
                $playerData = $this->getPlugin()->getPlayerData($name);
                if(!$playerData->isData()){
-                  $sender->sendMessage($this->getPrefix()." §cไม่พบชื่อผู้เล่น");
+                  $sender->sendMessage($this->getPrefix()." ".$this->getPlugin()->getLanguage()->getTranslate("playerdata.notfoundname"));
                   return true;
                }
                $this->getPlugin()->array[$sender->getName()] = $playerData->getName();
-               $sender->sendMessage($this->getPrefix().": §aกรุณาพิมพ์ที่แชทเพื่อเขียนข้อความ");
+               $sender->sendMessage($this->getPrefix()." ".$this->getPlugin()->getLanguage()->getTranslate("mail.command.write.complete"));
                break;
             case "read":
                if(!$sender->hasPermission("mail.command.read")){
@@ -109,31 +111,31 @@ class MailCommand extends Command implements PluginIdentifiableCommand{
                   return true;
                }
                if(count($args) < 1){
-                  $sender->sendMessage("§cลอง: /mail read <ชื่อผู้ที่ส่งข้อความ>");
+                  $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.read.error1", [$this->getPlugin()->getLanguage()->getTranslate("mail.command.read.usage")]));
                   return true;
                }
                if($this->getPlugin()->getMailSenderCount($sender->getName()) == 0){
-                  $sender->sendMessage("§cขออภัย: ยังไม่มีใครส่งข้อความมาหาคุณ");
+                  $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.read.error2"));
                   return true;
                }
                $playerName = array_shift($args);
                $playerName = strtolower($playerName);
                if(!$this->getPlugin()->isMailSender($sender->getName(), $playerName)){
-                  $sender->sendMessage("§cขออภัย: ไม่พบชื่อผู้ที่ส่งข้อความ");
+                  $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.read.error3"));
                   return true;
                }
                $count = $this->getPlugin()->getCountMail($sender->getName()) - $this->getPlugin()->getCountMailSender($sender->getName(), $playerName);
                $this->getPlugin()->setCountMail($sender->getName(), $count);
                $this->getPlugin()->setCountMailSender($sender->getName(), $playerName, 0);
                foreach($this->getPlugin()->getMailSenderWrite($sender->getName(), $playerName) as $msgCount2){
-                  $this->getPlugin()->setMailRead($sender->getName(), $playerName, $msgCount2, "§aอ่านแล้ว");
+                  $this->getPlugin()->setMailRead($sender->getName(), $playerName, $msgCount2, true);
                }
                foreach($this->getPlugin()->getMailSenderWrite($sender->getName(), $playerName) as $msgCount2){
                   $sender->sendMessage($this->getPlugin()->readMail($sender->getName(), $playerName, $msgCount2));
                }
                $player = $this->getPlugin()->getServer()->getPlayer($playerName);
                if($player instanceof Player){
-                  $player->sendMessage($this->getPrefix()." §b".$sender->getName()." §fได้อ่านข้อความของคุณแล้ว!");
+                  $player->sendMessage($this->getPrefix()." ".$this->getPlugin()->getLanguage()->getTranslate("mail.command.read.complete", [$sender->getName()]));
                }
                break;
             case "read-all":
@@ -142,26 +144,26 @@ class MailCommand extends Command implements PluginIdentifiableCommand{
                   return true;
                }
                if($this->getPlugin()->getMailSenderCount($sender->getName()) == 0){
-                  $sender->sendMessage("§cขออภัย: ยังไม่มีใครส่งข้อความมาหาคุณ");
+                  $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.readall.error1"));
                   return true;
                }
                foreach($this->getPlugin()->getMailSender($sender->getName()) as $playerName){
                   if(!$this->getPlugin()->isMailSender($sender->getName(), $playerName)){
-                     $sender->sendMessage("§cขออภัย: ไม่พบชื่อผู้ที่ส่งข้อความ");
+                     $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.readall.error2"));
                      return true;
                   }
                   $count = $this->getPlugin()->getCountMail($sender->getName()) - $this->getPlugin()->getCountMailSender($sender->getName(), $playerName);
                   $this->getPlugin()->setCountMail($sender->getName(), $count);
                   $this->getPlugin()->setCountMailSender($sender->getName(), $playerName, 0);
                   foreach($this->getPlugin()->getMailSenderWrite($sender->getName(), $playerName) as $msgCount2){
-                     $this->getPlugin()->setMailRead($sender->getName(), $playerName, $msgCount2, "§aอ่านแล้ว");
+                     $this->getPlugin()->setMailRead($sender->getName(), $playerName, $msgCount2, true);
                   }
                   foreach($this->getPlugin()->getMailSenderWrite($sender->getName(), $playerName) as $msgCount2){
                      $sender->sendMessage($this->getPlugin()->readMail($sender->getName(), $playerName, $msgCount2));
                   }
                   $player = $this->getPlugin()->getServer()->getPlayer($playerName);
                   if($player instanceof Player){
-                     $player->sendMessage($this->getPrefix()." §b".$sender->getName()." §fได้อ่านข้อความของคุณแล้ว!");
+                     $player->sendMessage($this->getPrefix()." ".$this->getPlugin()->getLanguage()->getTranslate("mail.command.readall.complete", [$sender->getName()]));
                   }
                }
                break;
@@ -171,13 +173,13 @@ class MailCommand extends Command implements PluginIdentifiableCommand{
                   return true;
                }
                if(count($args) < 2){
-                  $sender->sendMessage("§cลอง: /mail clear <ชื่อผู้ที่ส่งข้อความ> <หมายเลขข้อความ>");
+                  $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.clear.error1", [$this->getPlugin()->getLanguage()->getTranslate("mail.command.clear.usage")]));
                   return true;
                }
                $name = array_shift($args);                            
                $msgCount = array_shift($args);
                if(!is_numeric($msgCount)){
-                  $sender->sendMessage("§cลอง: /mail clear <ชื่อผู้ที่ส่งข้อความ> <หมายเลขข้อความ>");
+                  $sender->sendMessage($this->getPrefix()." ".$this->getPlugin()->getLanguage()->getTranslate("mail.command.clear.error2"));
                   return true;
                }
                $this->getPlugin()->delMailSender($sender, strtolower($name), $msgCount);
@@ -188,7 +190,7 @@ class MailCommand extends Command implements PluginIdentifiableCommand{
                   return true;
                }
                $this->getPlugin()->resetMail($sender->getName());
-               $sender->sendMessage($this->getPrefix()." §aลบข้อความของผู้ที่ส่งมาทั้งหมดเรียบร้อย!");
+               $sender->sendMessage($this->getPrefix()." ".$this->getPlugin()->getLanguage()->getTranslate("mail.command.clearall.complete"));
                break;
             case "see":
                if(!$sender->hasPermission("mail.command.see")){
@@ -196,17 +198,17 @@ class MailCommand extends Command implements PluginIdentifiableCommand{
                   return true;
                }
                if(count($args) < 1){
-                  $sender->sendMessage("§cลอง: /mail see <ชื่อผู้เล่น>");
+                  $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.see.error1", [$this->getPlugin()->getLanguage()->getTranslate("mail.command.see.usage")]));
                   return true;
                }
                $name = array_shift($args);
                $playerData = $this->getPlugin()->getPlayerData($name);
                if(!$playerData->isData()){
-                  $sender->sendMessage($this->getPrefix()." §cไม่พบชื่อผู้เล่น");
+                  $sender->sendMessage($this->getPrefix()." ".$this->getPlugin()->getLanguage()->getTranslate("playerdata.notfoundname"));
                   return true;
                }
                if(!$this->getPlugin()->isMailSender($playerData->getName(), strtolower($sender->getName()))){
-                  $sender->sendMessage("§cขออภัย: ไม่พบข้อความของคุณ? คุณไม่ได้ส่งข้อความไปหาคนนี้ หรือ เค้าลบข้อความของคุณไปแล้ว");
+                  $sender->sendMessage($this->getPlugin()->getLanguage()->getTranslate("mail.command.see.error2"));
                   return true;
                }
                foreach($this->getPlugin()->getMailSenderWrite($playerData->getName(), strtolower($sender->getName())) as $msgCount2){

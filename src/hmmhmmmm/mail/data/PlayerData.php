@@ -1,15 +1,16 @@
 <?php
 
-namespace hmmhmmmm\mail;
+namespace hmmhmmmm\mail\data;
 
-use pocketmine\Player;
+use hmmhmmmm\mail\Mail;
+
 use pocketmine\utils\Config;
 
 class PlayerData{
    private $plugin;
    private $name = "Steve";
 
-   public function __construct(Mail $plugin, $name){
+   public function __construct(Mail $plugin, string $name){
       $this->plugin = $plugin;         
       $this->name = $name;
    }
