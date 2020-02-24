@@ -1,5 +1,5 @@
 name: MailPlugin
-version: 3.0
+version: 3.1
 api: 3.11.0
 author: HmmHmmmmm
 main: hmmhmmmm\mail\Mail
