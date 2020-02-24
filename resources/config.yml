@@ -1,10 +1,9 @@
 #Language
-#>thai=ภาษาไทย
-#>english=English language
-language: thai
+#thai=ภาษาไทย
+#english=English language
+language: english
 
 
-#[thai] ชื่อผู้เล่นที่จะรับข้อความ report
-#[english] Name of players who will receive messages report
+#Name of players who will receive messages report
 report:
   name: HmmHmmmm

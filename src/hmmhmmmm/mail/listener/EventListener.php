@@ -37,4 +37,6 @@ class EventListener implements Listener{
          $this->getPlugin()->addMail($this->getPlugin()->array[$player->getName()], $player, $message);
          unset($this->getPlugin()->array[$player->getName()]);
       }
-   }}
+   }
+   
+}

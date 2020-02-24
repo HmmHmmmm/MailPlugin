@@ -18,9 +18,9 @@ use pocketmine\utils\Config;
 class Mail extends PluginBase implements MailAPI{
    private static $instance = null;
    private $prefix = "?";
-   private $facebook = "§cไม่มี";
-   private $youtube = "§cไม่มี";
-   private $discord = "§cไม่มี";
+   private $facebook = "§cwithout";
+   private $youtube = "§cwithout";
+   private $discord = "§cwithout";
    private $language = null;
    private $form = null;
    private $formapi = null;

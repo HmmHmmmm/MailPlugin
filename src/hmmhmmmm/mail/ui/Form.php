@@ -158,9 +158,9 @@ class Form{
          }
       });
       $form->setTitle($this->getPrefix()." SeeAll");
-      $form->setContent($content);         
+      $form->setContent($content);
       for($i = 0; $i < count($array); $i++){
-         $form->addButton($array[$i]);             
+         $form->addButton($array[$i]);
       }
       $form->sendToPlayer($player);
    }
@@ -367,4 +367,6 @@ class Form{
       $form->setContent($content);
       $form->addButton($this->getPlugin()->getLanguage()->getTranslate("form.clearall.button1"));
       $form->sendToPlayer($player);
-   }}
+   }
+   
+}
