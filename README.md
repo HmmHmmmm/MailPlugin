@@ -73,15 +73,15 @@ Dowload Plugin FormAPI [Click here](https://poggit.pmmp.io/p/FormAPI)
 
 
 # Images
-![1](images/3.0/1.png)
+![1](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/1.png)
 
-![2](images/3.0/2.png)
+![2](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/2.png)
 
-![3](images/3.0/3.png)
+![3](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/3.png)
 
-![4](images/3.0/4.png)
+![4](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/4.png)
 
-![5](images/3.0/5.png)
+![5](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/5.png)
 
 
 # Config
