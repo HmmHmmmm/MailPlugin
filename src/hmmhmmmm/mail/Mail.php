@@ -23,7 +23,6 @@ class Mail extends PluginBase implements MailAPI{
    private $discord = "§cwithout";
    private $language = null;
    private $form = null;
-   private $formapi = null;
    public $array = [];
    
    public $langClass = [
@@ -54,21 +53,14 @@ class Mail extends PluginBase implements MailAPI{
          new MailCommand($this),
          new ReportCommand($this)
       ];
-      foreach($cmd as $command){
-         $this->getServer()->getCommandMap()->register($command->getName(), $command);
-      }
+      $this->getServer()->getCommandMap()->registerAll("MailPlugin", $cmd);
+      
       $langConfig = $this->getConfig()->getNested("language");
       if(!in_array($langConfig, $this->langClass)){
          $this->getLogger()->error("§cNot found language ".$langConfig.", Please try ".implode(", ", $this->langClass));
          $this->getServer()->getPluginManager()->disablePlugin($this);
       }else{
          $this->language = new Language($this, $langConfig);
-      }
-      if($this->getServer()->getPluginManager()->getPlugin("FormAPI") === null){
-         $this->getLogger()->critical($this->language->getTranslate("notfound.plugin", ["FormAPI"]));
-         $this->getServer()->getPluginManager()->disablePlugin($this);
-      }else{
-         $this->formapi = $this->getServer()->getPluginManager()->getPlugin("FormAPI");
       }
    }
    public function getPrefix(): string{
@@ -88,9 +80,6 @@ class Mail extends PluginBase implements MailAPI{
    }
    public function getForm(): Form{
       return $this->form;
-   }
-   public function getFormAPI(): Plugin{
-      return $this->formapi;
    }
    public function getPlayerData(string $name): PlayerData{
       return new PlayerData($this, $name);

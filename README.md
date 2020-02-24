@@ -8,12 +8,6 @@
 
 # English
 
-```diff
-- This plugin will not work. If you don't have the plugin installed FormAPI
-```
-
-Dowload Plugin FormAPI [Click here](https://poggit.pmmp.io/p/FormAPI)
-
 
 **Features of plugin**<br>
 - Is a plugin send message find players (Can send messages offline have)
@@ -40,24 +34,20 @@ Dowload Plugin FormAPI [Click here](https://poggit.pmmp.io/p/FormAPI)
 
 
 **Images**<br>
-![1](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/1.png)
+![1](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/1en.jpg)
 
-![2](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/2.png)
+![2](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/2en.jpg)
 
-![3](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/3.png)
+![3](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/3en.jpg)
 
-![4](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/4.png)
+![4](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/4en.jpg)
 
-![5](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/5.png)
+![5](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/5en.jpg)
+
+![6](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/6en.jpg)
 
 
 # Thai
-
-```diff
-- ปลั๊กอินนี้จะไม่ทำงาน หากคุณไม่ได้ลงปลั๊กอิน FormAPI
-```
-
-ดาวโหลดปลั๊กอิน FormAPI [Click here](https://poggit.pmmp.io/p/FormAPI)
 
 
 **คุณสมบัติปลั๊กอิน**<br>
@@ -85,15 +75,17 @@ Dowload Plugin FormAPI [Click here](https://poggit.pmmp.io/p/FormAPI)
 
 
 **Images**<br>
-![1](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/1.png)
+![1](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/1th.jpg)
 
-![2](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/2.png)
+![2](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/2th.jpg)
 
-![3](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/3.png)
+![3](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/3th.jpg)
 
-![4](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/4.png)
+![4](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/4th.jpg)
 
-![5](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/5.png)
+![5](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/5th.jpg)
+
+![6](https://github.com/HmmHmmmm/MailPlugin/blob/master/images/3.0/6th.jpg)
 
 
 # Config

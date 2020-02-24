@@ -3,6 +3,9 @@
 namespace hmmhmmmm\mail\ui;
 
 use hmmhmmmm\mail\Mail;
+use hmmhmmmm\mail\libs\jojoe77777\FormAPI\CustomForm;
+use hmmhmmmm\mail\libs\jojoe77777\FormAPI\ModalForm;
+use hmmhmmmm\mail\libs\jojoe77777\FormAPI\SimpleForm;
 
 use pocketmine\Player;
 
@@ -18,8 +21,19 @@ class Form{
    public function getPrefix(): string{
       return $this->getPlugin()->getPrefix();
    }
+   
+   public function createCustomForm(?callable $function = null): CustomForm{
+      return new CustomForm($function);
+   }
+   public function createSimpleForm(?callable $function = null): SimpleForm{
+      return new SimpleForm($function);
+   }
+   public function createModalForm(?callable $function = null): ModalForm{
+      return new ModalForm($function);
+   }
+
    public function MailMenu(Player $player, string $content = ""): void{
-      $form = $this->getPlugin()->getFormAPI()->createSimpleForm(function ($player, $data){
+      $form = $this->createSimpleForm(function ($player, $data){
          if(!($data === null)){
             if($data == 0){
                if(!$player->hasPermission("mail.command.write")){
@@ -74,7 +88,7 @@ class Form{
       $form->sendToPlayer($player);
    }
    public function MailWrite(Player $player, string $content = ""): void{
-      $form = $this->getPlugin()->getFormAPI()->createCustomForm(function ($player, $data){
+      $form = $this->createCustomForm(function ($player, $data){
          if($data == null){
             return;
          }
@@ -112,7 +126,7 @@ class Form{
    public function MailSeeMsg(Player $player, string $senderName, string $content = ""): void{
       $senderName = strtolower($senderName);
       $pOnline = $this->getPlugin()->getServer()->getPlayer($senderName);
-      $form = $this->getPlugin()->getFormAPI()->createCustomForm(function ($player, $data) use ($senderName, $content, $pOnline){
+      $form = $this->createCustomForm(function ($player, $data) use ($senderName, $content, $pOnline){
          if(!($data === null)){
             $message = explode(" ", $data[1]); 
             if($message[0] == null){
@@ -142,7 +156,7 @@ class Form{
        foreach($this->getPlugin()->getMailPlayers($player->getName()) as $senderName){
          $array[] = $senderName;
       }
-      $form = $this->getPlugin()->getFormAPI()->createSimpleForm(function ($player, $data) use ($array){
+      $form = $this->createSimpleForm(function ($player, $data) use ($array){
          if(!($data === null)){
             $name = $array[$data];
             if(!$this->getPlugin()->isMailSender($name, strtolower($player->getName()))){
@@ -167,7 +181,7 @@ class Form{
    public function MailReadMsg(Player $player, string $senderName, string $content = ""): void{
       $senderName = strtolower($senderName);
       $pOnline = $this->getPlugin()->getServer()->getPlayer($senderName);
-      $form = $this->getPlugin()->getFormAPI()->createCustomForm(function ($player, $data) use ($senderName, $content, $pOnline){
+      $form = $this->createCustomForm(function ($player, $data) use ($senderName, $content, $pOnline){
          if(!($data === null)){
             if($data[1] == 0){
                $message = explode(" ", $data[2]); 
@@ -210,7 +224,7 @@ class Form{
        foreach($this->getPlugin()->getMailSender($player->getName()) as $senderName){
          $array[] = $senderName;
       }
-      $form = $this->getPlugin()->getFormAPI()->createSimpleForm(function ($player, $data) use ($array){
+      $form = $this->createSimpleForm(function ($player, $data) use ($array){
          if(!($data === null)){
             $name = $array[$data];
             $count = $this->getPlugin()->getCountMail($player->getName()) - $this->getPlugin()->getCountMailSender($player->getName(), $name);
@@ -234,7 +248,7 @@ class Form{
       $form->sendToPlayer($player);
    }
    public function MailClearAll(Player $player): void{
-      $form = $this->getPlugin()->getFormAPI()->createModalForm(function ($player, $data){
+      $form = $this->createModalForm(function ($player, $data){
          if(!($data === null)){
             if($data == 1){//ปุ่ม1
                $this->getPlugin()->resetMail($player->getName());
@@ -263,7 +277,7 @@ class Form{
             $groupSender = "§ePlayer";
          }
       }
-      $form = $this->getPlugin()->getFormAPI()->createModalForm(function ($player, $data) use ($senderName){
+      $form = $this->createModalForm(function ($player, $data) use ($senderName){
          if(!($data === null)){
             if($data == 1){//ปุ่ม1
                $name = $senderName;
@@ -309,7 +323,7 @@ class Form{
          $content = $this->getPlugin()->getLanguage()->getTranslate("form.report.content");
       }
       $pOnline = $this->getPlugin()->getServer()->getPlayer($senderName);
-      $form = $this->getPlugin()->getFormAPI()->createCustomForm(function ($player, $data) use ($senderName, $content, $pOnline){
+      $form = $this->createCustomForm(function ($player, $data) use ($senderName, $content, $pOnline){
          if(!($data === null)){
             $senderName = strtolower($senderName);
             if($data[1] == 0){
@@ -358,7 +372,7 @@ class Form{
       $form->sendToPlayer($player);
    }
    public function MessageUI(Player $player, string $content = ""): void{
-      $form = $this->getPlugin()->getFormAPI()->createSimpleForm(function ($player, $data){
+      $form = $this->createSimpleForm(function ($player, $data){
          if($data === null){
             return;
          }

@@ -10,7 +10,6 @@ class Language{
    private $plugin = null;
    private $data = null;
    private $lang = "?";
-   private $langVersion = 0;
    
    private $langEnglish = [
       "reset" => false,
