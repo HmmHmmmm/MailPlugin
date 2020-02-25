@@ -15,7 +15,7 @@ class ReportCommand extends Command implements PluginIdentifiableCommand{
    public function __construct(Mail $plugin){
       parent::__construct("report");
       $this->plugin = $plugin;
-      $this->setPermission("report.command.report");
+      $this->setPermission("report.command");
    }
    public function getPlugin(): Plugin{
       return $this->plugin;
