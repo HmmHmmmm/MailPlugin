@@ -9,6 +9,7 @@ use hmmhmmmm\mail\data\PlayerData;
 use hmmhmmmm\mail\listener\EventListener;
 use hmmhmmmm\mail\scheduler\MailTask;
 use hmmhmmmm\mail\ui\Form;
+use jojoe77777\FormAPI\Form as jojoe77777Form;
 
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
@@ -61,6 +62,11 @@ class Mail extends PluginBase implements MailAPI{
          $this->getServer()->getPluginManager()->disablePlugin($this);
       }else{
          $this->language = new Language($this, $langConfig);
+      }
+      if(!class_exists(jojoe77777Form::class)){
+         $this->getLogger()->error($this->language->getTranslate("notfound.libraries", ["FormAPI"]));
+         $this->getServer()->getPluginManager()->disablePlugin($this);
+         return;
       }
    }
    public function getPrefix(): string{

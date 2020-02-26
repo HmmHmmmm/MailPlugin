@@ -106,30 +106,25 @@ report:
 
 # Permissions
 ```
-permissions:
-  mail:
-    default: false
-    children:
-      mail.command:
-        default: false
-        children:
-          mail.command.info:
-            default: op
-          mail.command.write:
-            default: true
-          mail.command.read:
-            default: true
-          mail.command.readall:
-            default: true
-          mail.command.clear:
-            default: true
-          mail.command.clearall:
-            default: true
-          mail.command.see:
-            default: true
-  report:
-    default: false
-    children:
-      report.command:
-        default: true
+/*
+*
+* Command /mail it can be typed by everyone.
+*
+*/
+mail.command.info:
+  default: op
+mail.command.write:
+  default: true
+mail.command.read:
+  default: true
+mail.command.readall:
+  default: true
+mail.command.clear:
+  default: true
+mail.command.clearall:
+  default: true
+mail.command.see:
+  default: true
+report.command:
+  default: true
 ```
