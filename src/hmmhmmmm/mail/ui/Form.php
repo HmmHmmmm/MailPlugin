@@ -331,7 +331,6 @@ class Form{
          $this->MessageUI($player, $text);
          return;
       }
-      $content = "":
       if($this->getPlugin()->isMailSender($name, strtolower($player->getName()))){
          $array2 = [];
          foreach($this->getPlugin()->getMailSenderWrite($name, strtolower($player->getName())) as $msgCount2){
