@@ -1,6 +1,6 @@
 ## MailPlugin
 
-[![](https://poggit.pmmp.io/shield.state/MailPlugin)](https://poggit.pmmp.io/p/MailPlugin) [![](https://poggit.pmmp.io/shield.api/MailPlugin)](https://poggit.pmmp.io/p/MailPlugin) [![](https://poggit.pmmp.io/shield.dl/MailPlugin)](https://poggit.pmmp.io/p/MailPlugin)
+[![](https://poggit.pmmp.io/shield.state/MailPlugin)](https://poggit.pmmp.io/p/MailPlugin) [![](https://poggit.pmmp.io/shield.api/MailPlugin)](https://poggit.pmmp.io/p/MailPlugin) [![](https://poggit.pmmp.io/shield.dl.total/MailPlugin)](https://poggit.pmmp.io/p/MailPlugin)
 
 
 [Language English](#english)
