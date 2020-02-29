@@ -7,6 +7,9 @@
 
 [Language Thai](#thai)
 
+This plugin uses Libraries `FormAPI` No need to install that plugin
+Just load this plugin as .phar
+
 
 # English
 
@@ -17,22 +20,22 @@
 - Can store messages and delete messages
 - have gui form
 - have report
-- Have language thai,english (You can edit the language you don't like at/resources/language)
+- Have language thai and english (You can edit the language you don't like at, `/resources/language`)
 
 
 **How to use**<br>
-- Sample clip [click](https://youtu.be/BML6U6NXe4E)
+- Sample clip https://youtu.be/BML6U6NXe4E)
 
 
 **Command**<br>
-- /mail : open gui form
-- /mail write <PlayerName> : And type in chat to send a message to that player
-- /mail read <NamePlayerWhoSentMessage> : Read the messages of players that have been submitted.
-- /mail read-all : Read the messages of players that have been submitted All.
-- /mail clear <NamePlayerWhoSentMessage> <Message number> : To delete that message
-- /mail clear-all : To delete all submitted player messages
-- /mail see <PlayerName> : See my messages, Did he read it?
-- /report : Notify administrator
+- `/mail` : open gui form
+- `/mail write <PlayerName>` : And type in chat to send a message to that player
+- `/mail read <NamePlayerWhoSentMessage>` : Read the messages of players that have been submitted.
+- `/mail read-all` : Read the messages of players that have been submitted All.
+- `/mail clear <NamePlayerWhoSentMessage> <Message number>` : To delete that message
+- `/mail clear-all` : To delete all submitted player messages
+- `/mail see <PlayerName>` : See my messages, Did he read it?
+- `/report` : Notify administrator
 
 
 **Images**<br>
@@ -58,22 +61,22 @@
 - สามารถเก็บข้อความและลบข้อความได้
 - มี gui form
 - มี report
-- มีภาษา thai english (สามารถแก้ไขภาษาที่คุณไม่ชอบได้ที่/resources/language)
+- มีภาษา thai และ english (สามารถแก้ไขภาษาที่คุณไม่ชอบได้ที่ `/resources/language`)
 
 
 **วิธีใช้งาน**<br>
-- คลิปตัวอย่าง [คลิก](https://youtu.be/BML6U6NXe4E)
+- คลิปตัวอย่าง https://youtu.be/BML6U6NXe4E
 
 
 **Command**<br>
-- /mail : เปิด gui form
-- /mail write <ชื่อผู้เล่น> : แล้วพิมที่แชทเขียนข้อความเพื่อส่งข้อความให้ผู้เล่นคนนั้น
-- /mail read <ชื่อผู้ที่ส่งข้อความ> : อ่านข้อความผู้ที่ส่งมา
-- /mail read-all : อ่านข้อความผู้ที่ส่งมาทั้งหมด
-- /mail clear <ชื่อผู้ที่ส่งข้อความ> <หมายเลขข้อความ> : เพื่อลบข้อความนั้น
-- /mail clear-all : เพื่อลบข้อความของผู้ที่ส่งมาทั้งหมด
-- /mail see <ชื่อผู้เล่น> : เพื่อดูข้อความที่เราส่งไปว่าเค้าอ่านรึยัง?
-- /report : แจ้งแอดมิน
+- `/mail` : เปิด gui form
+- `/mail write <ชื่อผู้เล่น>` : แล้วพิมที่แชทเขียนข้อความเพื่อส่งข้อความให้ผู้เล่นคนนั้น
+- `/mail read <ชื่อผู้ที่ส่งข้อความ>` : อ่านข้อความผู้ที่ส่งมา
+- `/mail read-all` : อ่านข้อความผู้ที่ส่งมาทั้งหมด
+- `/mail clear <ชื่อผู้ที่ส่งข้อความ> <หมายเลขข้อความ>` : เพื่อลบข้อความนั้น
+- `/mail clear-all` : เพื่อลบข้อความของผู้ที่ส่งมาทั้งหมด
+- `/mail see <ชื่อผู้เล่น>` : เพื่อดูข้อความที่เราส่งไปว่าเค้าอ่านรึยัง?
+- `/report` : แจ้งแอดมิน
 
 
 **Images**<br>
