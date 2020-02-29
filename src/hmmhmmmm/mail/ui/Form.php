@@ -153,6 +153,7 @@ class Form{
       $form->sendToPlayer($player);
    }
    public function MailSeeAll(Player $player, string $content = ""): void{
+       $array = [];
        foreach($this->getPlugin()->getMailPlayers($player->getName()) as $senderName){
          $array[] = $senderName;
       }
@@ -164,11 +165,16 @@ class Form{
                $this->MailSeeAll($player, $text);
                return;
             }
+            $array2 = [];
             foreach($this->getPlugin()->getMailSenderWrite($name, strtolower($player->getName())) as $msgCount2){
                $array2[] = $this->getPlugin()->readMail($name, strtolower($player->getName()), $msgCount2);
             }
-            $msg = implode("\n", $array2);
-            $this->MailSeeMsg($player, $name, $msg);
+            if(!empty($array2)){
+               $msg = implode("\n", $array2);
+               $this->MailSeeMsg($player, $name, $msg);
+            }else{
+               $player->sendMessage("§cMessage not found");
+            }
          }
       });
       $form->setTitle($this->getPrefix()." SeeAll");
@@ -221,6 +227,7 @@ class Form{
       $form->sendToPlayer($player);
    }
    public function MailReadAll(Player $player, string $content = ""){
+       $array = [];
        foreach($this->getPlugin()->getMailSender($player->getName()) as $senderName){
          $array[] = $senderName;
       }
@@ -233,11 +240,17 @@ class Form{
             foreach($this->getPlugin()->getMailSenderWrite($player->getName(), $name) as $msgCount2){
                $this->getPlugin()->setMailRead($player->getName(), $name, $msgCount2, true);
             }
+            $array2 = [];
             foreach($this->getPlugin()->getMailSenderWrite($player->getName(), $name) as $msgCount2){
                $array2[] = $this->getPlugin()->readMail($player->getName(), $name, $msgCount2);
             }
-            $msg = implode("\n", $array2);
-            $this->MailReadMsg($player, $name, $msg);
+            if(!empty($array2)){
+               $msg = implode("\n", $array2);
+               $this->MailReadMsg($player, $name, $msg);
+            }else{
+               $player->sendMessage("§cMessage not found");
+            }
+            
          }
       });
       $form->setTitle($this->getPrefix()." ReadAll");
@@ -287,11 +300,16 @@ class Form{
                foreach($this->getPlugin()->getMailSenderWrite($player->getName(), $name) as $msgCount2){
                   $this->getPlugin()->setMailRead($player->getName(), $name, $msgCount2, true);
                }
+               $array2 = [];
                foreach($this->getPlugin()->getMailSenderWrite($player->getName(), $name) as $msgCount2){
                   $array2[] = $this->getPlugin()->readMail($player->getName(), $name, $msgCount2);
                }
-               $msg = implode("\n", $array2);
-               $this->MailReadMsg($player, $name, $msg);
+               if(!empty($array2)){
+                  $msg = implode("\n", $array2);
+                  $this->MailReadMsg($player, $name, $msg);
+               }else{
+                  $player->sendMessage("§cMessage not found");
+               }
             }
             if($data == 0){//ปุ่ม2
             }
@@ -313,12 +331,18 @@ class Form{
          $this->MessageUI($player, $text);
          return;
       }
+      $content = "":
       if($this->getPlugin()->isMailSender($name, strtolower($player->getName()))){
+         $array2 = [];
          foreach($this->getPlugin()->getMailSenderWrite($name, strtolower($player->getName())) as $msgCount2){
             $array2[] = $this->getPlugin()->readMail($name, strtolower($player->getName()), $msgCount2);
          }
-         $msg = implode("\n", $array2);
-         $content = $this->getPlugin()->getLanguage()->getTranslate("form.report.content")."\n§a[".$this->getPlugin()->getLanguage()->getTranslate("form.report.reportmsg")."]\n".$msg;
+         if(!empty($array2)){
+            $msg = implode("\n", $array2);
+            $content = $this->getPlugin()->getLanguage()->getTranslate("form.report.content")."\n§a[".$this->getPlugin()->getLanguage()->getTranslate("form.report.reportmsg")."]\n".$msg;
+         }else{
+            $content = $this->getPlugin()->getLanguage()->getTranslate("form.report.content")."\n§a[".$this->getPlugin()->getLanguage()->getTranslate("form.report.reportmsg")."]\n§cMessage not found";
+         }
       }else{
          $content = $this->getPlugin()->getLanguage()->getTranslate("form.report.content");
       }
@@ -352,11 +376,16 @@ class Form{
                foreach($this->getPlugin()->getMailSenderWrite($player->getName(), $name) as $msgCount2){
                   $this->getPlugin()->setMailRead($player->getName(), $name, $msgCount2, true);
                }
+               $array2 = [];
                foreach($this->getPlugin()->getMailSenderWrite($player->getName(), $name) as $msgCount2){
                   $array2[] = $this->getPlugin()->readMail($player->getName(), $name, $msgCount2);
                }
-               $msg = implode("\n", $array2);
-               $this->MailReadMsg($player, $name, $msg);
+               if(!empty($array2)){
+                  $msg = implode("\n", $array2);
+                  $this->MailReadMsg($player, $name, $msg);
+               }else{
+                  $player->sendMessage("§cMessage not found");
+               }
             }
          }
       });
